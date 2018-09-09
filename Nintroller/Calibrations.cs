@@ -619,6 +619,48 @@
                     deadY = 0
                 }
             };
+
+            public WiiTurntable WiiTurntableDefault = new WiiTurntable()
+            {
+                Joy = new Joystick()
+                {
+                    centerX = 31,
+                    minX = 0,
+                    maxX = 63,
+                    deadX = 8,
+
+                    centerY = 31,
+                    minY = 0,
+                    maxY = 63,
+                    deadY = 8
+                },
+
+                JoyTableRL = new Joystick()
+                {
+                    centerX = 32,
+                    minX = 0,
+                    maxX = 63,
+                    deadX = 0,
+
+                    centerY = 32,
+                    minY = 0,
+                    maxY = 63,
+                    deadY = 0
+                },
+
+                JoyCrossfadeDial = new Joystick()
+                {
+                    centerX = 7,
+                    minX = 0,
+                    maxX = 15,
+                    deadX = 0,
+
+                    centerY = 15,
+                    minY = 0,
+                    maxY = 31,
+                    deadY = 0
+                }
+            };
         }
 
         /// <summary>
@@ -1008,6 +1050,10 @@
         /// Holder for Wii Classic Controller Pro calibration
         /// </summary>
         public ClassicControllerPro ClassicProCalibration;
+        /// <summary>
+        /// Holder for Wii Turntable calibration
+        /// </summary>
+        public WiiTurntable WiiTurntableCalibration;
 
         /// <summary>
         /// Default constructor setting all calibrations to their defaults.
@@ -1019,6 +1065,7 @@
             NunchukCalibration    = Calibrations.Defaults.NunchukDefault;
             ClassicCalibration    = Calibrations.Defaults.ClassicControllerDefault;
             ClassicProCalibration = Calibrations.Defaults.ClassicControllerProDefault;
+            WiiTurntableCalibration = Calibrations.Defaults.WiiTurntableDefault;
         }
 
         /// <summary>
@@ -1062,6 +1109,10 @@
                 {
                     ProCalibration.SetCalibration(calStr);
                 }
+                else if (calStr.StartsWith("wtb"))
+                {
+                    WiiTurntableCalibration.SetCalibration(calStr);
+                }
             }
         }
 
@@ -1079,6 +1130,7 @@
                     NunchukCalibration    = Calibrations.Defaults.NunchukDefault;
                     ClassicCalibration    = Calibrations.Defaults.ClassicControllerDefault;
                     ClassicProCalibration = Calibrations.Defaults.ClassicControllerProDefault;
+                    WiiTurntableCalibration = Calibrations.Defaults.WiiTurntableDefault;
                     break;
 
                 case Calibrations.CalibrationPreset.Modest:
@@ -1087,6 +1139,7 @@
                     NunchukCalibration    = Calibrations.Moderate.NunchukModest;
                     ClassicCalibration    = Calibrations.Moderate.ClassicControllerModest;
                     ClassicProCalibration = Calibrations.Moderate.ClassicControllerProModest;
+                    WiiTurntableCalibration = Calibrations.Defaults.WiiTurntableDefault;
                     break;
 
                 case Calibrations.CalibrationPreset.Extra:
@@ -1095,6 +1148,7 @@
                     NunchukCalibration    = Calibrations.Extras.NunchukExtra;
                     ClassicCalibration    = Calibrations.Extras.ClassicControllerExtra;
                     ClassicProCalibration = Calibrations.Extras.ClassicControllerProExtra;
+                    WiiTurntableCalibration = Calibrations.Defaults.WiiTurntableDefault;
                     break;
 
                 case Calibrations.CalibrationPreset.Minimum:
@@ -1103,6 +1157,7 @@
                     NunchukCalibration    = Calibrations.Minimum.NunchukMinimal;
                     ClassicCalibration    = Calibrations.Minimum.ClassicControllerMinimal;
                     ClassicProCalibration = Calibrations.Minimum.ClassicControllerProMinimal;
+                    WiiTurntableCalibration = Calibrations.Defaults.WiiTurntableDefault;
                     break;
 
                 case Calibrations.CalibrationPreset.None:
@@ -1111,6 +1166,7 @@
                     NunchukCalibration    = Calibrations.None.NunchukRaw;
                     ClassicCalibration    = Calibrations.None.ClassicControllerRaw;
                     ClassicProCalibration = Calibrations.None.ClassicControllerProRaw;
+                    WiiTurntableCalibration = Calibrations.Defaults.WiiTurntableDefault;
                     break;
             }
         }
@@ -1128,6 +1184,7 @@
             text += ClassicCalibration.GetCalibrationString();
             text += ClassicProCalibration.GetCalibrationString();
             text += ProCalibration.GetCalibrationString();
+            text += WiiTurntableCalibration.GetCalibrationString();
 
             return text;
         }

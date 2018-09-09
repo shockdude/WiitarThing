@@ -28,6 +28,7 @@
                     <MenuItem x:Name="typeClassic" Header="Classic Controller" Click="typeOption_Click"/>
                     <MenuItem x:Name="typeClassicPro" Header="Classic Controller Pro" Click="typeOption_Click"/>
                     <MenuItem x:Name="typeGuitar" Header="Wii Guitar" Click="typeOption_Click"/>
+                    <MenuItem x:Name="typeTurntable" Header="Wii Turntable" Click="typeOption_Click"/>
                 </ContextMenu>
             </Image.ContextMenu>
         </Image>

@@ -37,14 +37,13 @@ namespace WiinUSoft.Windows
         private void Nintroller_StateUpdate(object sender, NintrollerStateEventArgs e)
         {
 #if DEBUG
-            var wgt = new WiiGuitar();
-
             var sb = new StringBuilder();
 
             if (!Cancelled)
             {
                 if (e.state is WiiGuitar)
                 {
+                    var wgt = new WiiGuitar();
                     wgt = (WiiGuitar)e.state;
 
                     sb.Clear();
@@ -54,6 +53,65 @@ namespace WiinUSoft.Windows
                         sb.Append(wgt.DebugLastData[i].ToString("X2"));
                         sb.Append(" ");
                     }
+
+                    Prompt(sb.ToString(), isBold: true, isItalic: false, isSmall: false, isDebug: false);
+
+                    //System.Threading.Thread.Sleep(16);
+                } 
+                else if (e.state is WiiTurntable)
+                {
+                    var wtb = new WiiTurntable();
+                    wtb = (WiiTurntable)e.state;
+
+                    sb.Clear();
+
+                    for (int i = 0; i < wtb.DebugLastData.Length; i++)
+                    {
+                        sb.Append(wtb.DebugLastData[i].ToString("X2"));
+                        sb.Append(" ");
+                    }
+
+                    byte[] data = wtb.DebugLastData;
+                    byte JoyX, JoyY, Crossfade, Dial, LeftTable, RightTable;
+                    int offset = 6;
+
+                    sb.Append("\n");
+
+                    JoyX = (byte)(data[offset + 0] & 0x3F);
+                    JoyY = (byte)(data[offset + 1] & 0x3F);
+                    sb.Append("JoyX: " + JoyX.ToString("X2"));
+                    sb.Append("\n");
+                    sb.Append("JoyY: " + JoyY.ToString("X2"));
+                    sb.Append("\n");
+
+                    // Crossfader
+                    Crossfade = (byte)((data[offset + 2] & 0x1e) >> 1);
+                    // Dial
+                    Dial = (byte)(
+                        ((data[offset + 2] & 0x60) >> 2) |
+                        ((data[offset + 3] & 0xe0) >> 5)
+                        );
+                    sb.Append("Crossfade: " + Crossfade.ToString("X2"));
+                    sb.Append("\n");
+                    sb.Append("Dial: " + Dial.ToString("X2"));
+                    sb.Append("\n");
+
+                    // Right Turntable
+                    RightTable = (byte)(((
+                        ((data[offset + 2] & 0x01) << 5) |
+                        ((data[offset] & 0xc0) >> 3) |
+                        ((data[offset + 1] & 0xc0) >> 5) |
+                        ((data[offset + 2] & 0x80) >> 7)
+                        ) + 32) % 64);
+                    // Left Turntable
+                    LeftTable = (byte)(((
+                        ((data[offset + 4] & 0x01) << 5) |
+                        (data[offset + 3] & 0x1f)
+                        ) + 32) % 64);
+                    sb.Append("RightTable: " + RightTable.ToString("X2"));
+                    sb.Append("\n");
+                    sb.Append("LeftTable: " + LeftTable.ToString("X2"));
+                    sb.Append("\n");
 
                     Prompt(sb.ToString(), isBold: true, isItalic: false, isSmall: false, isDebug: false);
 

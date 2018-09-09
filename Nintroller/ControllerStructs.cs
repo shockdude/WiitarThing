@@ -2485,4 +2485,409 @@ namespace NintrollerLib
             return GetEnumerator();
         }
     }
+
+    public struct WiiTurntable : INintrollerState
+    {
+#if DEBUG
+        private bool _debugViewActive;
+        public bool DebugViewActive
+        {
+            get
+            {
+                return _debugViewActive;
+            }
+            set
+            {
+                _debugViewActive = value;
+            }
+        }
+#endif
+
+        public Wiimote wiimote;
+        public Joystick Joy;
+        public Joystick JoyTableRL;
+        public Joystick JoyCrossfadeDial;
+        public bool RG, RR, RB, LG, LR, LB;
+        public bool Euphoria;
+        public bool Plus, Minus;
+
+#if DEBUG
+        public byte[] DebugLastData;
+#endif
+
+#if DEBUG
+        private bool DebugButton_Dump;
+#endif
+
+        private const float WTB_JOY_DIGITAL_THRESH = 0.5f;
+
+        public WiiTurntable(Wiimote wm)
+        {
+            this = new WiiTurntable();
+            wiimote = wm;
+
+#if DEBUG
+            DebugLastData = new byte[] { 0 };
+#endif
+        }
+
+        public bool Start
+        {
+            get { return Plus; }
+            set { Plus = value; }
+        }
+
+        public bool Select
+        {
+            get { return Minus; }
+            set { Minus = value; }
+        }
+
+        public void Update(byte[] data)
+        {
+#if DEBUG
+            //DebugLastData = new byte[data.Length];
+
+            //for (int i = 0; i < data.Length; i++)
+            //{
+            //    DebugLastData[i] = data[i];
+            //}
+
+            DebugLastData = data;
+#endif
+
+            int offset = 0;
+            switch ((InputReport)data[0])
+            {
+                case InputReport.BtnsExt:
+                case InputReport.BtnsExtB:
+                    offset = 3;
+                    break;
+                case InputReport.BtnsAccExt:
+                    offset = 6;
+                    break;
+                case InputReport.BtnsIRExt:
+                    offset = 13;
+                    break;
+                case InputReport.BtnsAccIRExt:
+                    offset = 16;
+                    break;
+                case InputReport.ExtOnly:
+                    offset = 1;
+                    break;
+                default:
+                    return;
+            }
+
+            if (offset > 0)
+            {
+                // Buttons
+                RG = (data[offset + 5] & 0x20) == 0;
+                RR = (data[offset + 4] & 0x02) == 0;
+                RB = (data[offset + 5] & 0x04) == 0;
+                LG = (data[offset + 5] & 0x08) == 0;
+                LR = (data[offset + 4] & 0x20) == 0;
+                LB = (data[offset + 5] & 0x80) == 0;
+                Euphoria = (data[offset + 5] & 0x10) == 0;
+                Plus = (data[offset + 4] & 0x04) == 0;
+                Minus = (data[offset + 4] & 0x10) == 0;
+
+                // Joystick
+                Joy.rawX = (byte)(data[offset] & 0x3F);
+                Joy.rawY = (byte)(data[offset + 1] & 0x3F);
+                Joy.Normalize();
+
+                // Crossfader
+                JoyCrossfadeDial.rawX = (byte)((data[offset + 2] & 0x1e) >> 1);
+                // Dial
+                JoyCrossfadeDial.rawY = (byte)(
+                    ((data[offset + 2] & 0x60) >> 2) |
+                    ((data[offset + 3] & 0xe0) >> 5)
+                    );
+                JoyCrossfadeDial.Normalize();
+
+                // Right Turntable
+                JoyTableRL.rawX = (byte)(((
+                    ((data[offset + 2] & 0x01) << 5) |
+                    ((data[offset] & 0xc0) >> 3) |
+                    ((data[offset + 1] & 0xc0) >> 5) |
+                    ((data[offset + 2] & 0x80) >> 7)
+                    ) + 32) % 64);
+                // Left Turntable
+                JoyTableRL.rawY = (byte)(((
+                    ((data[offset + 4] & 0x01) << 5) |
+                    (data[offset + 3] & 0x1f)
+                    ) + 32) % 64);
+                JoyTableRL.Normalize();
+            }
+
+            wiimote.Update(data);
+
+#if DEBUG
+            if (offset > 0)
+            {
+                if (wiimote.buttons.Home)
+                {
+                    if (!DebugButton_Dump)
+                    {
+                        DebugButton_Dump = true;
+
+                        //var sb = new StringBuilder();
+
+                        //sb.AppendLine("Wii Guitar data packet dump:");
+
+                        //for (int i = 0; i < data.Length; i++)
+                        //{
+                        //    sb.Append(data[i].ToString("X2") + " ");
+                        //}
+
+                        //MessageBox.Show(sb.ToString(), "DEBUG: WII GUITAR DUMP", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        DebugViewActive = true;
+                    }
+                }
+                else
+                {
+                    DebugButton_Dump = false;
+                }
+
+
+            }
+#endif
+        }
+
+        public float GetValue(string input)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetCalibration(Calibrations.CalibrationPreset preset)
+        {
+            wiimote.SetCalibration(preset);
+
+            SetCalibration(Calibrations.Defaults.WiiTurntableDefault);
+
+            /*
+            switch (preset)
+            {
+                case Calibrations.CalibrationPreset.Default:
+                    SetCalibration(Calibrations.Defaults.WiiTurntableDefault);
+                    break;
+            }
+            */
+        }
+
+        public void SetCalibration(INintrollerState from)
+        {
+            if (from.CalibrationEmpty)
+            {
+                // don't apply empty calibrations
+                return;
+            }
+
+            if (from.GetType() == typeof(WiiTurntable))
+            {
+                Joy.Calibrate(((WiiTurntable)from).Joy);
+                JoyTableRL.Calibrate(((WiiTurntable)from).JoyTableRL);
+                JoyCrossfadeDial.Calibrate(((WiiTurntable)from).JoyCrossfadeDial);
+            }
+            else if (from.GetType() == typeof(Wiimote))
+            {
+                wiimote.SetCalibration(from);
+            }
+        }
+
+        public void SetCalibration(string calibrationString)
+        {
+            if (calibrationString.Count(c => c == '0') > 5)
+            {
+                // don't set empty calibrations
+                return;
+            }
+
+            string[] components = calibrationString.Split(new char[] { ':' });
+
+            foreach (string component in components)
+            {
+                if (component.StartsWith("joy"))
+                {
+                    string[] joyConfig = component.Split(new char[] { '|' });
+
+                    for (int j = 1; j < joyConfig.Length; j++)
+                    {
+                        int value = 0;
+                        if (int.TryParse(joyConfig[j], out value))
+                        {
+                            switch (j)
+                            {
+                                case 1: Joy.centerX = value; break;
+                                case 2: Joy.minX = value; break;
+                                case 3: Joy.maxX = value; break;
+                                case 4: Joy.deadX = value; break;
+                                case 5: Joy.centerY = value; break;
+                                case 6: Joy.minY = value; break;
+                                case 7: Joy.maxY = value; break;
+                                case 8: Joy.deadY = value; break;
+                                default: break;
+                            }
+                        }
+                    }
+                }
+                else if (component.StartsWith("jtb"))
+                {
+                    string[] joyConfig = component.Split(new char[] { '|' });
+
+                    for (int j = 1; j < joyConfig.Length; j++)
+                    {
+                        int value = 0;
+                        if (int.TryParse(joyConfig[j], out value))
+                        {
+                            switch (j)
+                            {
+                                case 1: JoyTableRL.centerX = value; break;
+                                case 2: JoyTableRL.minX = value; break;
+                                case 3: JoyTableRL.maxX = value; break;
+                                case 4: JoyTableRL.deadX = value; break;
+                                case 5: JoyTableRL.centerY = value; break;
+                                case 6: JoyTableRL.minY = value; break;
+                                case 7: JoyTableRL.maxY = value; break;
+                                case 8: JoyTableRL.deadY = value; break;
+                                default: break;
+                            }
+                        }
+                    }
+                }
+                else if (component.StartsWith("jcd"))
+                {
+                    string[] joyConfig = component.Split(new char[] { '|' });
+
+                    for (int j = 1; j < joyConfig.Length; j++)
+                    {
+                        int value = 0;
+                        if (int.TryParse(joyConfig[j], out value))
+                        {
+                            switch (j)
+                            {
+                                case 1: JoyCrossfadeDial.centerX = value; break;
+                                case 2: JoyCrossfadeDial.minX = value; break;
+                                case 3: JoyCrossfadeDial.maxX = value; break;
+                                case 4: JoyCrossfadeDial.deadX = value; break;
+                                case 5: JoyCrossfadeDial.centerY = value; break;
+                                case 6: JoyCrossfadeDial.minY = value; break;
+                                case 7: JoyCrossfadeDial.maxY = value; break;
+                                case 8: JoyCrossfadeDial.deadY = value; break;
+                                default: break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public string GetCalibrationString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("-wtb");
+            sb.Append(":joy");
+                sb.Append("|"); sb.Append(Joy.centerX);
+                sb.Append("|"); sb.Append(Joy.minX);
+                sb.Append("|"); sb.Append(Joy.maxX);
+                sb.Append("|"); sb.Append(Joy.deadX);
+                sb.Append("|"); sb.Append(Joy.centerY);
+                sb.Append("|"); sb.Append(Joy.minY);
+                sb.Append("|"); sb.Append(Joy.maxY);
+                sb.Append("|"); sb.Append(Joy.deadY);
+            sb.Append(":jtb");
+                sb.Append("|"); sb.Append(JoyTableRL.centerX);
+                sb.Append("|"); sb.Append(JoyTableRL.minX);
+                sb.Append("|"); sb.Append(JoyTableRL.maxX);
+                sb.Append("|"); sb.Append(JoyTableRL.deadX);
+                sb.Append("|"); sb.Append(JoyTableRL.centerY);
+                sb.Append("|"); sb.Append(JoyTableRL.minY);
+                sb.Append("|"); sb.Append(JoyTableRL.maxY);
+                sb.Append("|"); sb.Append(JoyTableRL.deadY);
+            sb.Append(":jcd");
+                sb.Append("|"); sb.Append(JoyCrossfadeDial.centerX);
+                sb.Append("|"); sb.Append(JoyCrossfadeDial.minX);
+                sb.Append("|"); sb.Append(JoyCrossfadeDial.maxX);
+                sb.Append("|"); sb.Append(JoyCrossfadeDial.deadX);
+                sb.Append("|"); sb.Append(JoyCrossfadeDial.centerY);
+                sb.Append("|"); sb.Append(JoyCrossfadeDial.minY);
+                sb.Append("|"); sb.Append(JoyCrossfadeDial.maxY);
+                sb.Append("|"); sb.Append(JoyCrossfadeDial.deadY);
+
+            return sb.ToString();
+        }
+
+        public bool CalibrationEmpty
+        {
+            get
+            {
+                if (Joy.maxX == 0 && Joy.maxY == 0
+                    && JoyCrossfadeDial.maxX == 0 && JoyCrossfadeDial.maxY == 0
+                    && JoyTableRL.maxX == 0 && JoyTableRL.maxY == 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+
+        public IEnumerator<KeyValuePair<string, float>> GetEnumerator()
+        {
+            foreach (var input in wiimote)
+            {
+                yield return input;
+            }
+
+            Joy.Normalize();
+            JoyTableRL.Normalize();
+            JoyCrossfadeDial.Normalize();
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.X, Joy.X);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.Y, Joy.Y);
+
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.UP, Joy.Y > 0f ? 1.0f : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.DOWN, Joy.Y < 0f ? 1.0f : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LEFT, Joy.X < 0f ? 1.0f : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.RIGHT, Joy.X > 0f ? 1.0f : 0.0f);
+
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.RTABLECLKWISE, JoyTableRL.X > 0f ? JoyTableRL.X : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.RTABLECTRCLKWISE, JoyTableRL.X > 0f ? 0.0f : -JoyTableRL.X);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.RTABLE, JoyTableRL.X);
+
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.RG, RG ? 1.0f : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.RR, RR ? 1.0f : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.RB, RB ? 1.0f : 0.0f);
+
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LTABLECLKWISE, JoyTableRL.Y > 0f ? JoyTableRL.Y : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LTABLECTRCLKWISE, JoyTableRL.Y > 0f ? 0.0f : -JoyTableRL.Y);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LTABLE, JoyTableRL.Y);
+
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LG, LG ? 1.0f : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LR, LR ? 1.0f : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LB, LB ? 1.0f : 0.0f);
+
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.DIALCLKWISE, JoyCrossfadeDial.Y > 0f ? JoyCrossfadeDial.Y : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.DIALCTRCLKWISE, JoyCrossfadeDial.Y > 0f ? 0.0f : -JoyCrossfadeDial.Y);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.DIAL, JoyCrossfadeDial.Y);
+
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.CROSSFADERLEFT, JoyCrossfadeDial.X > 0f ? 0.0f : -JoyCrossfadeDial.X);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.CROSSFADERRIGHT, JoyCrossfadeDial.X > 0f ? JoyCrossfadeDial.X : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.CROSSFADER, JoyCrossfadeDial.X);
+
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.EUPHORIA, Euphoria ? 1.0f : 0.0f);
+
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.START, Start ? 1.0f : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.SELECT, Select ? 1.0f : 0.0f);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+    }
 }

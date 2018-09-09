@@ -8,7 +8,8 @@
         <Grid.Resources>
             <local:ShowWindowCommand x:Key="ShowWindow" />
         </Grid.Resources>
-        <Label Content="Built upon WiinUSoft by Justin Keys. Guitar support added by Meowmaritus." HorizontalAlignment="Left" VerticalAlignment="Bottom" Padding="2" FontSize="12" Margin="8,0,0,3" Width="412"/>
+        <Label Content="Built upon WiinUSoft by Justin Keys. Guitar support added by Meowmaritus." HorizontalAlignment="Left" VerticalAlignment="Bottom" Padding="2" FontSize="12" Margin="8,0,0,12" Width="412" Height="25"/>
+        <Label Content="Turntable support added by shockdude." HorizontalAlignment="Left" VerticalAlignment="Bottom" Padding="2" FontSize="12" Width="412" Height="23" Margin="8,0,0,0"/>
         <tb:TaskbarIcon x:Name="trayIcon" 
                         IconSource="/WiitarThing;component/GHWT_Wii_Guitar.ico"
                         ToolTipText="WiinUSoft" 

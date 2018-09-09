@@ -517,6 +517,44 @@ namespace WiinUSoft
                     holder.SetValue(Inputs.WiiGuitar.SELECT, wgt.Select);
 #endregion
                     break;
+
+                case ControllerType.Turntable:
+#region Wii Turntable
+                    WiiTurntable wtb = (WiiTurntable)e.state;
+
+                    //SetWiimoteInputs(wgt.wiimote);
+
+                    holder.SetValue(Inputs.WiiTurntable.UP, wtb.Joy.Y > 0 ? 1f : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.DOWN, wtb.Joy.Y < 0 ? 1f : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.LEFT, wtb.Joy.X < 0 ? 1f : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.RIGHT, wtb.Joy.X > 0 ? 1f : 0f);
+
+                    holder.SetValue(Inputs.WiiTurntable.RTABLECLKWISE, wtb.JoyTableRL.X > 0 ? wtb.JoyTableRL.X : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.RTABLECTRCLKWISE, wtb.JoyTableRL.X < 0 ? wtb.JoyTableRL.X * -1 : 0f);
+
+                    holder.SetValue(Inputs.WiiTurntable.RG, wtb.RG);
+                    holder.SetValue(Inputs.WiiTurntable.RR, wtb.RR);
+                    holder.SetValue(Inputs.WiiTurntable.RB, wtb.RB);
+
+                    holder.SetValue(Inputs.WiiTurntable.LTABLECLKWISE, wtb.JoyTableRL.Y > 0 ? wtb.JoyTableRL.Y : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.LTABLECTRCLKWISE, wtb.JoyTableRL.Y < 0 ? wtb.JoyTableRL.Y * -1 : 0f);
+
+                    holder.SetValue(Inputs.WiiTurntable.LG, wtb.LG);
+                    holder.SetValue(Inputs.WiiTurntable.LR, wtb.LR);
+                    holder.SetValue(Inputs.WiiTurntable.LB, wtb.LB);
+
+                    holder.SetValue(Inputs.WiiTurntable.DIALCLKWISE, wtb.JoyCrossfadeDial.Y > 0 ? wtb.JoyCrossfadeDial.Y : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.DIALCTRCLKWISE, wtb.JoyCrossfadeDial.Y < 0 ? wtb.JoyCrossfadeDial.Y * -1 : 0f);
+
+                    holder.SetValue(Inputs.WiiTurntable.CROSSFADERLEFT, wtb.JoyCrossfadeDial.X < 0 ? wtb.JoyCrossfadeDial.X * -1 : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.CROSSFADERRIGHT, wtb.JoyCrossfadeDial.X > 0 ? wtb.JoyCrossfadeDial.X : 0f);
+
+                    holder.SetValue(Inputs.WiiTurntable.EUPHORIA, wtb.Euphoria);
+
+                    holder.SetValue(Inputs.WiiTurntable.SELECT, wtb.Select);
+                    holder.SetValue(Inputs.WiiTurntable.START, wtb.Start);
+#endregion
+                    break;
             }
             
             holder.Update();
@@ -749,6 +787,11 @@ namespace WiinUSoft
                     UserPrefs.Instance.UpdateDeviceIcon(devicePath, "WGTIcon");
                     break;
 
+                case ControllerType.Turntable:
+                    icon.Source = (ImageSource)Application.Current.Resources["WTBIcon"];
+                    UserPrefs.Instance.UpdateDeviceIcon(devicePath, "WTBIcon");
+                    break;
+
                 default:
                     icon.Source = (ImageSource)Application.Current.Resources["WIcon"];
                     UserPrefs.Instance.UpdateDeviceIcon(devicePath, "WIcon");
@@ -878,6 +921,10 @@ namespace WiinUSoft
 
                 case 6:
                     device.ForceControllerType(ControllerType.Guitar);
+                    break;
+
+                case 7:
+                    device.ForceControllerType(ControllerType.Turntable);
                     break;
 
                 default:

@@ -35,6 +35,8 @@ namespace Shared
                     return "Drums";
                 case ControllerType.TaikoDrum:
                     return "Taiko Drum";
+                case ControllerType.Turntable:
+                    return "Turntable";
                 case ControllerType.PartiallyInserted:
                     return "Unknown";
             }
