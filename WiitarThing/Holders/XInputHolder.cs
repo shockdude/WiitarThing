@@ -311,14 +311,14 @@ namespace WiinUSoft.Holders
                     result.Add(Inputs.WiiTurntable.DIALCLKWISE, Inputs.Xbox360.LDOWN);
                     result.Add(Inputs.WiiTurntable.DIALCTRCLKWISE, Inputs.Xbox360.LUP);
 
-                    result.Add(Inputs.Wiimote.UP, Inputs.Xbox360.UP);
-                    result.Add(Inputs.Wiimote.DOWN, Inputs.Xbox360.DOWN);
-                    result.Add(Inputs.Wiimote.LEFT, Inputs.Xbox360.LEFT);
-                    result.Add(Inputs.Wiimote.RIGHT, Inputs.Xbox360.RIGHT);
+                    result.Add(Inputs.Wiimote.UP, Inputs.Xbox360.LEFT);
+                    result.Add(Inputs.Wiimote.DOWN, Inputs.Xbox360.RIGHT);
+                    result.Add(Inputs.Wiimote.LEFT, Inputs.Xbox360.DOWN);
+                    result.Add(Inputs.Wiimote.RIGHT, Inputs.Xbox360.UP);
                     result.Add(Inputs.Wiimote.A, Inputs.Xbox360.A);
-                    result.Add(Inputs.Wiimote.B, Inputs.Xbox360.B);
-                    result.Add(Inputs.Wiimote.ONE, Inputs.Xbox360.LS);
-                    result.Add(Inputs.Wiimote.TWO, Inputs.Xbox360.RS);
+                    result.Add(Inputs.Wiimote.B, "");
+                    result.Add(Inputs.Wiimote.ONE, Inputs.Xbox360.B);
+                    result.Add(Inputs.Wiimote.TWO, Inputs.Xbox360.X);
                     result.Add(Inputs.Wiimote.PLUS, Inputs.Xbox360.BACK);
                     result.Add(Inputs.Wiimote.MINUS, Inputs.Xbox360.START);
                     result.Add(Inputs.Wiimote.HOME, Inputs.Xbox360.GUIDE);

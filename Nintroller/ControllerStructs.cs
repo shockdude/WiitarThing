@@ -2519,8 +2519,6 @@ namespace NintrollerLib
         private bool DebugButton_Dump;
 #endif
 
-        private const float WTB_JOY_DIGITAL_THRESH = 0.5f;
-
         public WiiTurntable(Wiimote wm)
         {
             this = new WiiTurntable();

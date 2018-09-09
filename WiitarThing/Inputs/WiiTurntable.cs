@@ -25,7 +25,7 @@ namespace WiinUSoft.Inputs
 
         public const string LTABLECLKWISE = "wtbLTABLECLKWISE";
         public const string LTABLECTRCLKWISE = "wtbLTABLECTRCLKWISE";
-        public const string LTABLE = "wtbRTABLE";
+        public const string LTABLE = "wtbLTABLE";
 
         public const string LG = "wtbLG";
         public const string LR = "wtbLR";

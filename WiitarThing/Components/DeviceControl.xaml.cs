@@ -522,7 +522,7 @@ namespace WiinUSoft
 #region Wii Turntable
                     WiiTurntable wtb = (WiiTurntable)e.state;
 
-                    //SetWiimoteInputs(wgt.wiimote);
+                    SetWiimoteInputs(wtb.wiimote);
 
                     holder.SetValue(Inputs.WiiTurntable.UP, wtb.Joy.Y > 0 ? 1f : 0f);
                     holder.SetValue(Inputs.WiiTurntable.DOWN, wtb.Joy.Y < 0 ? 1f : 0f);
