@@ -15,6 +15,7 @@
         Guitar               = 0x0000A4200103,
         Drums                = 0x0100A4200103,
         TaikoDrum            = 0x0000A4200111,
+        Turntable            = 0x0300A4200103,
 
         FalseState           = 0x010000000000,  // Seen when reconnecting to a Pro Controller
         PartiallyInserted    = 0xFFFFFFFFFFFF
