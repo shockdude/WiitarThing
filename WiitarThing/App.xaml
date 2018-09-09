@@ -33,6 +33,7 @@
         <BitmapImage x:Key="WNIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource= "Images/WiimoteNunchuk_white_32.png"/>
         <BitmapImage x:Key="UIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource= "Images/unknown.png"/>
         <BitmapImage x:Key="WGTIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource= "Images/GHWT_Wii_Guitar.png"/>
-        <BitmapImage x:Key="WTBIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource= "Images/unknown.png"/>
+        <!-- Turntable image by Sk8er5000, CC BY-SA 3.0: https://commons.wikimedia.org/wiki/File:DJ_Hero_Turntable_PS3.jpg -->
+        <BitmapImage x:Key="WTBIcon" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource= "Images/DJHero_Turntable.png"/>
     </Application.Resources>
 </Application>
