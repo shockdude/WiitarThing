@@ -524,33 +524,43 @@ namespace WiinUSoft
 
                     SetWiimoteInputs(wtb.wiimote);
 
-                    holder.SetValue(Inputs.WiiTurntable.UP, wtb.Joy.Y > 0 ? 1f : 0f);
-                    holder.SetValue(Inputs.WiiTurntable.DOWN, wtb.Joy.Y < 0 ? 1f : 0f);
-                    holder.SetValue(Inputs.WiiTurntable.LEFT, wtb.Joy.X < 0 ? 1f : 0f);
-                    holder.SetValue(Inputs.WiiTurntable.RIGHT, wtb.Joy.X > 0 ? 1f : 0f);
+                    // analog
+                    holder.SetValue(Inputs.WiiTurntable.LUP, wtb.Joy.Y > 0 ? wtb.Joy.Y : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.LDOWN, wtb.Joy.Y < 0 ? -wtb.Joy.Y : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.LLEFT, wtb.Joy.X < 0 ? -wtb.Joy.X : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.LRIGHT, wtb.Joy.X > 0 ? wtb.Joy.X : 0f);
 
-                    holder.SetValue(Inputs.WiiTurntable.RTABLECLKWISE, wtb.JoyTableRL.X > 0 ? wtb.JoyTableRL.X : 0f);
-                    holder.SetValue(Inputs.WiiTurntable.RTABLECTRCLKWISE, wtb.JoyTableRL.X < 0 ? wtb.JoyTableRL.X * -1 : 0f);
+                    // digital
+                    holder.SetValue(Inputs.WiiTurntable.UP, wtb.Joy.Y > 0.5f ? 1f : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.DOWN, wtb.Joy.Y < -0.5f ? -1f : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.LEFT, wtb.Joy.X < -0.5f ? -1f : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.RIGHT, wtb.Joy.X > 0.5f ? 1f : 0f);
+
+                    holder.SetValue(Inputs.WiiTurntable.LTABLECLKWISE, wtb.JoyTableLR.X > 0 ? wtb.JoyTableLR.X : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.LTABLECTRCLKWISE, wtb.JoyTableLR.X < 0 ? -wtb.JoyTableLR.X : 0f);
+
+                    holder.SetValue(Inputs.WiiTurntable.RTABLECLKWISE, wtb.JoyTableLR.Y > 0 ? wtb.JoyTableLR.Y : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.RTABLECTRCLKWISE, wtb.JoyTableLR.Y < 0 ? -wtb.JoyTableLR.Y : 0f);
 
                     holder.SetValue(Inputs.WiiTurntable.RG, wtb.RG);
                     holder.SetValue(Inputs.WiiTurntable.RR, wtb.RR);
                     holder.SetValue(Inputs.WiiTurntable.RB, wtb.RB);
-
-                    holder.SetValue(Inputs.WiiTurntable.LTABLECLKWISE, wtb.JoyTableRL.Y > 0 ? wtb.JoyTableRL.Y : 0f);
-                    holder.SetValue(Inputs.WiiTurntable.LTABLECTRCLKWISE, wtb.JoyTableRL.Y < 0 ? wtb.JoyTableRL.Y * -1 : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.RBUTTONS, wtb.RButtons.value);
 
                     holder.SetValue(Inputs.WiiTurntable.LG, wtb.LG);
                     holder.SetValue(Inputs.WiiTurntable.LR, wtb.LR);
                     holder.SetValue(Inputs.WiiTurntable.LB, wtb.LB);
+                    holder.SetValue(Inputs.WiiTurntable.LBUTTONS, wtb.LButtons.value);
 
-                    holder.SetValue(Inputs.WiiTurntable.DIALCLKWISE, wtb.JoyCrossfadeDial.Y > 0 ? wtb.JoyCrossfadeDial.Y : 0f);
-                    holder.SetValue(Inputs.WiiTurntable.DIALCTRCLKWISE, wtb.JoyCrossfadeDial.Y < 0 ? wtb.JoyCrossfadeDial.Y * -1 : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.DIALCLKWISE, wtb.JoyDialCrossfade.X > 0 ? wtb.JoyDialCrossfade.X : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.DIALCTRCLKWISE, wtb.JoyDialCrossfade.X < 0 ? -wtb.JoyDialCrossfade.X : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.DIALT, wtb.Dial.value);
 
-                    holder.SetValue(Inputs.WiiTurntable.CROSSFADERLEFT, wtb.JoyCrossfadeDial.X < 0 ? wtb.JoyCrossfadeDial.X * -1 : 0f);
-                    holder.SetValue(Inputs.WiiTurntable.CROSSFADERRIGHT, wtb.JoyCrossfadeDial.X > 0 ? wtb.JoyCrossfadeDial.X : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.CROSSFADERLEFT, wtb.JoyDialCrossfade.Y < 0 ? -wtb.JoyDialCrossfade.Y : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.CROSSFADERRIGHT, wtb.JoyDialCrossfade.Y > 0 ? wtb.JoyDialCrossfade.Y : 0f);
+                    holder.SetValue(Inputs.WiiTurntable.CROSSFADERT, wtb.Crossfader.value);
 
                     holder.SetValue(Inputs.WiiTurntable.EUPHORIA, wtb.Euphoria);
-
                     holder.SetValue(Inputs.WiiTurntable.SELECT, wtb.Select);
                     holder.SetValue(Inputs.WiiTurntable.START, wtb.Start);
 #endregion
@@ -647,7 +657,8 @@ namespace WiinUSoft
 
             bool currentRumbleState = device.RumbleEnabled;
 
-            if (!properties.useRumble)
+            // disable rumble for turntables
+            if (!properties.useRumble || device.Type == ControllerType.Turntable)
             {
                 if (currentRumbleState) device.RumbleEnabled = false;
                 return;

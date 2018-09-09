@@ -287,38 +287,40 @@ namespace WiinUSoft.Holders
                     result.Add(Inputs.WiiTurntable.RG, Inputs.Xbox360.A);
                     result.Add(Inputs.WiiTurntable.RR, Inputs.Xbox360.B);
                     result.Add(Inputs.WiiTurntable.RB, Inputs.Xbox360.X);
-                    result.Add(Inputs.WiiTurntable.LG, Inputs.Xbox360.Y);
-                    result.Add(Inputs.WiiTurntable.LR, Inputs.Xbox360.LB);
-                    result.Add(Inputs.WiiTurntable.LB, Inputs.Xbox360.RB);
+                    result.Add(Inputs.WiiTurntable.LG, Inputs.Xbox360.A);
+                    result.Add(Inputs.WiiTurntable.LR, Inputs.Xbox360.B);
+                    result.Add(Inputs.WiiTurntable.LB, Inputs.Xbox360.X);
 
                     result.Add(Inputs.WiiTurntable.UP, Inputs.Xbox360.UP);
                     result.Add(Inputs.WiiTurntable.DOWN, Inputs.Xbox360.DOWN);
                     result.Add(Inputs.WiiTurntable.LEFT, Inputs.Xbox360.LEFT);
                     result.Add(Inputs.WiiTurntable.RIGHT, Inputs.Xbox360.RIGHT);
 
-                    result.Add(Inputs.WiiTurntable.EUPHORIA, Inputs.Xbox360.LS);
+                    result.Add(Inputs.WiiTurntable.LTABLECTRCLKWISE, Inputs.Xbox360.LLEFT);
+                    result.Add(Inputs.WiiTurntable.LTABLECLKWISE, Inputs.Xbox360.LRIGHT);
+                    result.Add(Inputs.WiiTurntable.RTABLECTRCLKWISE, Inputs.Xbox360.LDOWN);
+                    result.Add(Inputs.WiiTurntable.RTABLECLKWISE, Inputs.Xbox360.LUP);
+
+                    result.Add(Inputs.WiiTurntable.EUPHORIA, Inputs.Xbox360.Y);
                     result.Add(Inputs.WiiTurntable.SELECT, Inputs.Xbox360.BACK);
                     result.Add(Inputs.WiiTurntable.START, Inputs.Xbox360.START);
 
-                    result.Add(Inputs.WiiTurntable.RTABLECLKWISE, Inputs.Xbox360.RRIGHT);
-                    result.Add(Inputs.WiiTurntable.RTABLECTRCLKWISE, Inputs.Xbox360.RLEFT);
-                    result.Add(Inputs.WiiTurntable.LTABLECLKWISE, Inputs.Xbox360.RDOWN);
-                    result.Add(Inputs.WiiTurntable.LTABLECTRCLKWISE, Inputs.Xbox360.RUP);
+                    result.Add(Inputs.WiiTurntable.DIALCLKWISE, Inputs.Xbox360.RRIGHT);
+                    result.Add(Inputs.WiiTurntable.DIALCTRCLKWISE, Inputs.Xbox360.RLEFT);
+                    result.Add(Inputs.WiiTurntable.CROSSFADERLEFT, Inputs.Xbox360.RDOWN);
+                    result.Add(Inputs.WiiTurntable.CROSSFADERRIGHT, Inputs.Xbox360.RUP);
 
-                    result.Add(Inputs.WiiTurntable.CROSSFADERRIGHT, Inputs.Xbox360.LRIGHT);
-                    result.Add(Inputs.WiiTurntable.CROSSFADERLEFT, Inputs.Xbox360.LLEFT);
-
-                    result.Add(Inputs.WiiTurntable.DIALCLKWISE, Inputs.Xbox360.LDOWN);
-                    result.Add(Inputs.WiiTurntable.DIALCTRCLKWISE, Inputs.Xbox360.LUP);
+                    result.Add(Inputs.WiiTurntable.RBUTTONS, Inputs.Xbox360.RT);
+                    result.Add(Inputs.WiiTurntable.LBUTTONS, Inputs.Xbox360.LT);
 
                     result.Add(Inputs.Wiimote.UP, Inputs.Xbox360.LEFT);
                     result.Add(Inputs.Wiimote.DOWN, Inputs.Xbox360.RIGHT);
                     result.Add(Inputs.Wiimote.LEFT, Inputs.Xbox360.DOWN);
                     result.Add(Inputs.Wiimote.RIGHT, Inputs.Xbox360.UP);
-                    result.Add(Inputs.Wiimote.A, Inputs.Xbox360.A);
+                    result.Add(Inputs.Wiimote.A, Inputs.Xbox360.X);
                     result.Add(Inputs.Wiimote.B, "");
                     result.Add(Inputs.Wiimote.ONE, Inputs.Xbox360.B);
-                    result.Add(Inputs.Wiimote.TWO, Inputs.Xbox360.X);
+                    result.Add(Inputs.Wiimote.TWO, Inputs.Xbox360.A);
                     result.Add(Inputs.Wiimote.PLUS, Inputs.Xbox360.BACK);
                     result.Add(Inputs.Wiimote.MINUS, Inputs.Xbox360.START);
                     result.Add(Inputs.Wiimote.HOME, Inputs.Xbox360.GUIDE);

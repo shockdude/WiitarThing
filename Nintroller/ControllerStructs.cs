@@ -2504,10 +2504,10 @@ namespace NintrollerLib
 #endif
 
         public Wiimote wiimote;
-        public Joystick Joy;
-        public Joystick JoyTableRL;
-        public Joystick JoyCrossfadeDial;
+        public Joystick Joy, JoyTableLR, JoyDialCrossfade;
+        public Trigger Crossfader, Dial;
         public bool RG, RR, RB, LG, LR, LB;
+        public Trigger RButtons, LButtons;
         public bool Euphoria;
         public bool Plus, Minus;
 
@@ -2579,44 +2579,78 @@ namespace NintrollerLib
 
             if (offset > 0)
             {
-                // Buttons
-                RG = (data[offset + 5] & 0x20) == 0;
-                RR = (data[offset + 4] & 0x02) == 0;
-                RB = (data[offset + 5] & 0x04) == 0;
-                LG = (data[offset + 5] & 0x08) == 0;
-                LR = (data[offset + 4] & 0x20) == 0;
-                LB = (data[offset + 5] & 0x80) == 0;
-                Euphoria = (data[offset + 5] & 0x10) == 0;
-                Plus = (data[offset + 4] & 0x04) == 0;
-                Minus = (data[offset + 4] & 0x10) == 0;
-
+                byte rawLButtons, rawRButtons, rawLTable, rawRTable, rawDial, rawCrossfader;
                 // Joystick
                 Joy.rawX = (byte)(data[offset] & 0x3F);
                 Joy.rawY = (byte)(data[offset + 1] & 0x3F);
                 Joy.Normalize();
 
-                // Crossfader
-                JoyCrossfadeDial.rawX = (byte)((data[offset + 2] & 0x1e) >> 1);
-                // Dial
-                JoyCrossfadeDial.rawY = (byte)(
-                    ((data[offset + 2] & 0x60) >> 2) |
-                    ((data[offset + 3] & 0xe0) >> 5)
-                    );
-                JoyCrossfadeDial.Normalize();
+                // Buttons
+                rawLButtons = (byte)(7 - (
+                    ((data[offset + 5] & 0x80) >> 5) |
+                    ((data[offset + 4] & 0x20) >> 4) |
+                    ((data[offset + 5] & 0x08) >> 3)));
+                rawRButtons = (byte)(7 - (
+                    (data[offset + 5] & 0x04) |
+                    (data[offset + 4] & 0x02) |
+                    ((data[offset + 5] & 0x20) >> 5)));
+                //RG = (data[offset + 5] & 0x20) == 0;
+                //RR = (data[offset + 4] & 0x02) == 0;
+                //RB = (data[offset + 5] & 0x04) == 0;
+                //LG = (data[offset + 5] & 0x08) == 0;
+                //LR = (data[offset + 4] & 0x20) == 0;
+                //LB = (data[offset + 5] & 0x80) == 0;
+                LG = (rawLButtons & 0x01) != 0;
+                LR = (rawLButtons & 0x02) != 0;
+                LB = (rawLButtons & 0x04) != 0;
+                RG = (rawRButtons & 0x01) != 0;
+                RR = (rawRButtons & 0x02) != 0;
+                RB = (rawRButtons & 0x04) != 0;
+                Euphoria = (data[offset + 5] & 0x10) == 0;
+                Plus = (data[offset + 4] & 0x04) == 0;
+                Minus = (data[offset + 4] & 0x10) == 0;
 
-                // Right Turntable
-                JoyTableRL.rawX = (byte)(((
+                // Button X360 triggers
+                RButtons.rawValue = rawRButtons;
+                RButtons.Normalize();
+                LButtons.rawValue = rawLButtons;
+                LButtons.Normalize();
+
+                // Turntables
+                // Wii range is 0-32 per direction.
+                // 360 range is 0-128 per direction out of 0-32768
+                // map this to 0-32 per direction out of 0-8192
+                rawLTable = (byte)(((
+                    ((data[offset + 4] & 0x01) << 5) |
+                    (data[offset + 3] & 0x1f)
+                    ) + 32) % 64);
+                rawRTable = (byte)(((
                     ((data[offset + 2] & 0x01) << 5) |
                     ((data[offset] & 0xc0) >> 3) |
                     ((data[offset + 1] & 0xc0) >> 5) |
                     ((data[offset + 2] & 0x80) >> 7)
                     ) + 32) % 64);
-                // Left Turntable
-                JoyTableRL.rawY = (byte)(((
-                    ((data[offset + 4] & 0x01) << 5) |
-                    (data[offset + 3] & 0x1f)
-                    ) + 32) % 64);
-                JoyTableRL.Normalize();
+                JoyTableLR.rawX = rawLTable + 8160;
+                JoyTableLR.rawY = rawRTable + 8160;
+                JoyTableLR.Normalize();
+
+                // Dial & Crossfader Joystick
+                rawDial = (byte)(
+                    ((data[offset + 2] & 0x60) >> 2) |
+                    ((data[offset + 3] & 0xe0) >> 5)
+                    );
+                rawCrossfader = (byte)((data[offset + 2] & 0x1e) >> 1);
+                JoyDialCrossfade.rawX = rawDial;
+                JoyDialCrossfade.rawY = rawCrossfader;
+                JoyDialCrossfade.Normalize();
+
+                // Dial Trigger
+                Dial.rawValue = rawDial;
+                Dial.Normalize();
+
+                // Crossfader Trigger
+                Crossfader.rawValue = rawCrossfader;
+                Crossfader.Normalize();
             }
 
             wiimote.Update(data);
@@ -2663,6 +2697,7 @@ namespace NintrollerLib
         {
             wiimote.SetCalibration(preset);
 
+            // only default calibration is supported right now
             SetCalibration(Calibrations.Defaults.WiiTurntableDefault);
 
             /*
@@ -2670,6 +2705,22 @@ namespace NintrollerLib
             {
                 case Calibrations.CalibrationPreset.Default:
                     SetCalibration(Calibrations.Defaults.WiiTurntableDefault);
+                    break;
+
+                case Calibrations.CalibrationPreset.Modest:
+                    SetCalibration(Calibrations.Moderate.WiiTurntableModest);
+                    break;
+
+                case Calibrations.CalibrationPreset.Extra:
+                    SetCalibration(Calibrations.Extras.WiiTurntableExtra);
+                    break;
+
+                case Calibrations.CalibrationPreset.Minimum:
+                    SetCalibration(Calibrations.Minimum.WiiTurntableMinimal);
+                    break;
+
+                case Calibrations.CalibrationPreset.None:
+                    SetCalibration(Calibrations.None.WiiTurntableRaw);
                     break;
             }
             */
@@ -2686,8 +2737,12 @@ namespace NintrollerLib
             if (from.GetType() == typeof(WiiTurntable))
             {
                 Joy.Calibrate(((WiiTurntable)from).Joy);
-                JoyTableRL.Calibrate(((WiiTurntable)from).JoyTableRL);
-                JoyCrossfadeDial.Calibrate(((WiiTurntable)from).JoyCrossfadeDial);
+                JoyTableLR.Calibrate(((WiiTurntable)from).JoyTableLR);
+                JoyDialCrossfade.Calibrate(((WiiTurntable)from).JoyDialCrossfade);
+                LButtons.Calibrate(((WiiTurntable)from).LButtons);
+                RButtons.Calibrate(((WiiTurntable)from).RButtons);
+                Dial.Calibrate(((WiiTurntable)from).Dial);
+                Crossfader.Calibrate(((WiiTurntable)from).Crossfader);
             }
             else if (from.GetType() == typeof(Wiimote))
             {
@@ -2742,20 +2797,20 @@ namespace NintrollerLib
                         {
                             switch (j)
                             {
-                                case 1: JoyTableRL.centerX = value; break;
-                                case 2: JoyTableRL.minX = value; break;
-                                case 3: JoyTableRL.maxX = value; break;
-                                case 4: JoyTableRL.deadX = value; break;
-                                case 5: JoyTableRL.centerY = value; break;
-                                case 6: JoyTableRL.minY = value; break;
-                                case 7: JoyTableRL.maxY = value; break;
-                                case 8: JoyTableRL.deadY = value; break;
+                                case 1: JoyTableLR.centerX = value; break;
+                                case 2: JoyTableLR.minX = value; break;
+                                case 3: JoyTableLR.maxX = value; break;
+                                case 4: JoyTableLR.deadX = value; break;
+                                case 5: JoyTableLR.centerY = value; break;
+                                case 6: JoyTableLR.minY = value; break;
+                                case 7: JoyTableLR.maxY = value; break;
+                                case 8: JoyTableLR.deadY = value; break;
                                 default: break;
                             }
                         }
                     }
                 }
-                else if (component.StartsWith("jcd"))
+                else if (component.StartsWith("jdc"))
                 {
                     string[] joyConfig = component.Split(new char[] { '|' });
 
@@ -2766,14 +2821,86 @@ namespace NintrollerLib
                         {
                             switch (j)
                             {
-                                case 1: JoyCrossfadeDial.centerX = value; break;
-                                case 2: JoyCrossfadeDial.minX = value; break;
-                                case 3: JoyCrossfadeDial.maxX = value; break;
-                                case 4: JoyCrossfadeDial.deadX = value; break;
-                                case 5: JoyCrossfadeDial.centerY = value; break;
-                                case 6: JoyCrossfadeDial.minY = value; break;
-                                case 7: JoyCrossfadeDial.maxY = value; break;
-                                case 8: JoyCrossfadeDial.deadY = value; break;
+                                case 1: JoyDialCrossfade.centerX = value; break;
+                                case 2: JoyDialCrossfade.minX = value; break;
+                                case 3: JoyDialCrossfade.maxX = value; break;
+                                case 4: JoyDialCrossfade.deadX = value; break;
+                                case 5: JoyDialCrossfade.centerY = value; break;
+                                case 6: JoyDialCrossfade.minY = value; break;
+                                case 7: JoyDialCrossfade.maxY = value; break;
+                                case 8: JoyDialCrossfade.deadY = value; break;
+                                default: break;
+                            }
+                        }
+                    }
+                }
+                else if (component.StartsWith("lb"))
+                {
+                    string[] lButtonsConfig = component.Split(new char[] { '|' });
+
+                    for (int t = 1; t < lButtonsConfig.Length; t++)
+                    {
+                        int value = 0;
+                        if (int.TryParse(lButtonsConfig[t], out value))
+                        {
+                            switch (t)
+                            {
+                                case 1: LButtons.min = value; break;
+                                case 2: LButtons.max = value; break;
+                                default: break;
+                            }
+                        }
+                    }
+                }
+                else if (component.StartsWith("rb"))
+                {
+                    string[] rButtonsConfig = component.Split(new char[] { '|' });
+
+                    for (int t = 1; t < rButtonsConfig.Length; t++)
+                    {
+                        int value = 0;
+                        if (int.TryParse(rButtonsConfig[t], out value))
+                        {
+                            switch (t)
+                            {
+                                case 1: RButtons.min = value; break;
+                                case 2: RButtons.max = value; break;
+                                default: break;
+                            }
+                        }
+                    }
+                }
+                else if (component.StartsWith("cf"))
+                {
+                    string[] crossfaderConfig = component.Split(new char[] { '|' });
+
+                    for (int t = 1; t < crossfaderConfig.Length; t++)
+                    {
+                        int value = 0;
+                        if (int.TryParse(crossfaderConfig[t], out value))
+                        {
+                            switch (t)
+                            {
+                                case 1: Crossfader.min = value; break;
+                                case 2: Crossfader.max = value; break;
+                                default: break;
+                            }
+                        }
+                    }
+                }
+                else if (component.StartsWith("di"))
+                {
+                    string[] dialConfig = component.Split(new char[] { '|' });
+
+                    for (int t = 1; t < dialConfig.Length; t++)
+                    {
+                        int value = 0;
+                        if (int.TryParse(dialConfig[t], out value))
+                        {
+                            switch (t)
+                            {
+                                case 1: Dial.min = value; break;
+                                case 2: Dial.max = value; break;
                                 default: break;
                             }
                         }
@@ -2796,23 +2923,35 @@ namespace NintrollerLib
                 sb.Append("|"); sb.Append(Joy.maxY);
                 sb.Append("|"); sb.Append(Joy.deadY);
             sb.Append(":jtb");
-                sb.Append("|"); sb.Append(JoyTableRL.centerX);
-                sb.Append("|"); sb.Append(JoyTableRL.minX);
-                sb.Append("|"); sb.Append(JoyTableRL.maxX);
-                sb.Append("|"); sb.Append(JoyTableRL.deadX);
-                sb.Append("|"); sb.Append(JoyTableRL.centerY);
-                sb.Append("|"); sb.Append(JoyTableRL.minY);
-                sb.Append("|"); sb.Append(JoyTableRL.maxY);
-                sb.Append("|"); sb.Append(JoyTableRL.deadY);
-            sb.Append(":jcd");
-                sb.Append("|"); sb.Append(JoyCrossfadeDial.centerX);
-                sb.Append("|"); sb.Append(JoyCrossfadeDial.minX);
-                sb.Append("|"); sb.Append(JoyCrossfadeDial.maxX);
-                sb.Append("|"); sb.Append(JoyCrossfadeDial.deadX);
-                sb.Append("|"); sb.Append(JoyCrossfadeDial.centerY);
-                sb.Append("|"); sb.Append(JoyCrossfadeDial.minY);
-                sb.Append("|"); sb.Append(JoyCrossfadeDial.maxY);
-                sb.Append("|"); sb.Append(JoyCrossfadeDial.deadY);
+                sb.Append("|"); sb.Append(JoyTableLR.centerX);
+                sb.Append("|"); sb.Append(JoyTableLR.minX);
+                sb.Append("|"); sb.Append(JoyTableLR.maxX);
+                sb.Append("|"); sb.Append(JoyTableLR.deadX);
+                sb.Append("|"); sb.Append(JoyTableLR.centerY);
+                sb.Append("|"); sb.Append(JoyTableLR.minY);
+                sb.Append("|"); sb.Append(JoyTableLR.maxY);
+                sb.Append("|"); sb.Append(JoyTableLR.deadY);
+            sb.Append(":jdc");
+                sb.Append("|"); sb.Append(JoyDialCrossfade.centerX);
+                sb.Append("|"); sb.Append(JoyDialCrossfade.minX);
+                sb.Append("|"); sb.Append(JoyDialCrossfade.maxX);
+                sb.Append("|"); sb.Append(JoyDialCrossfade.deadX);
+                sb.Append("|"); sb.Append(JoyDialCrossfade.centerY);
+                sb.Append("|"); sb.Append(JoyDialCrossfade.minY);
+                sb.Append("|"); sb.Append(JoyDialCrossfade.maxY);
+                sb.Append("|"); sb.Append(JoyDialCrossfade.deadY);
+            sb.Append(":lb");
+                sb.Append("|"); sb.Append(LButtons.min);
+                sb.Append("|"); sb.Append(LButtons.max);
+            sb.Append(":rb");
+                sb.Append("|"); sb.Append(RButtons.min);
+                sb.Append("|"); sb.Append(RButtons.max);
+            sb.Append(":cf");
+                sb.Append("|"); sb.Append(Crossfader.min);
+                sb.Append("|"); sb.Append(Crossfader.max);
+            sb.Append(":di");
+                sb.Append("|"); sb.Append(Dial.min);
+                sb.Append("|"); sb.Append(Dial.max);
 
             return sb.ToString();
         }
@@ -2821,9 +2960,7 @@ namespace NintrollerLib
         {
             get
             {
-                if (Joy.maxX == 0 && Joy.maxY == 0
-                    && JoyCrossfadeDial.maxX == 0 && JoyCrossfadeDial.maxY == 0
-                    && JoyTableRL.maxX == 0 && JoyTableRL.maxY == 0)
+                if (Joy.maxX == 0 && Joy.maxY == 0 && JoyTableLR.maxX == 0 && JoyTableLR.maxY == 0 && JoyDialCrossfade.maxX == 0 && JoyDialCrossfade.maxY == 0)
                 {
                     return true;
                 }
@@ -2843,42 +2980,56 @@ namespace NintrollerLib
             }
 
             Joy.Normalize();
-            JoyTableRL.Normalize();
-            JoyCrossfadeDial.Normalize();
-            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.X, Joy.X);
-            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.Y, Joy.Y);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LX, Joy.X);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LY, Joy.Y);
 
-            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.UP, Joy.Y > 0f ? 1.0f : 0.0f);
-            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.DOWN, Joy.Y < 0f ? 1.0f : 0.0f);
-            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LEFT, Joy.X < 0f ? 1.0f : 0.0f);
-            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.RIGHT, Joy.X > 0f ? 1.0f : 0.0f);
+            // analog
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LUP, Joy.Y > 0f ? Joy.Y : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LDOWN, Joy.Y < 0f ? -Joy.Y : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LLEFT, Joy.X < 0f ? -Joy.X : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LRIGHT, Joy.X > 0f ? Joy.X : 0.0f);
 
-            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.RTABLECLKWISE, JoyTableRL.X > 0f ? JoyTableRL.X : 0.0f);
-            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.RTABLECTRCLKWISE, JoyTableRL.X > 0f ? 0.0f : -JoyTableRL.X);
-            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.RTABLE, JoyTableRL.X);
+            // digital
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.UP, Joy.Y > 0.5f ? 1.0f : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.DOWN, Joy.Y < -0.5f ? -1.0f : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LEFT, Joy.X < -0.5f ? -1.0f : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.RIGHT, Joy.X > 0.5f ? 1.0f : 0.0f);
 
+            JoyTableLR.Normalize();
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LTABLECLKWISE, JoyTableLR.X > 0f ? JoyTableLR.X : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LTABLECTRCLKWISE, JoyTableLR.X < 0f ? -JoyTableLR.X : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LTABLE, JoyTableLR.X);
+
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.RTABLECLKWISE, JoyTableLR.Y > 0f ? JoyTableLR.Y : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.RTABLECTRCLKWISE, JoyTableLR.Y < 0f ? -JoyTableLR.Y : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.RTABLE, JoyTableLR.Y);
+
+            RButtons.Normalize();
+            LButtons.Normalize();
             yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.RG, RG ? 1.0f : 0.0f);
             yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.RR, RR ? 1.0f : 0.0f);
             yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.RB, RB ? 1.0f : 0.0f);
-
-            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LTABLECLKWISE, JoyTableRL.Y > 0f ? JoyTableRL.Y : 0.0f);
-            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LTABLECTRCLKWISE, JoyTableRL.Y > 0f ? 0.0f : -JoyTableRL.Y);
-            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LTABLE, JoyTableRL.Y);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.RBUTTONS, RButtons.value);
 
             yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LG, LG ? 1.0f : 0.0f);
             yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LR, LR ? 1.0f : 0.0f);
             yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LB, LB ? 1.0f : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.LBUTTONS, LButtons.value);
 
-            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.DIALCLKWISE, JoyCrossfadeDial.Y > 0f ? JoyCrossfadeDial.Y : 0.0f);
-            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.DIALCTRCLKWISE, JoyCrossfadeDial.Y > 0f ? 0.0f : -JoyCrossfadeDial.Y);
-            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.DIAL, JoyCrossfadeDial.Y);
+            JoyDialCrossfade.Normalize();
+            Dial.Normalize();
+            Crossfader.Normalize();
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.DIALCLKWISE, JoyDialCrossfade.X > 0f ? JoyDialCrossfade.X : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.DIALCTRCLKWISE, JoyDialCrossfade.X < 0f ? -JoyDialCrossfade.X : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.DIAL, JoyDialCrossfade.X);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.DIALT, Dial.value);
 
-            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.CROSSFADERLEFT, JoyCrossfadeDial.X > 0f ? 0.0f : -JoyCrossfadeDial.X);
-            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.CROSSFADERRIGHT, JoyCrossfadeDial.X > 0f ? JoyCrossfadeDial.X : 0.0f);
-            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.CROSSFADER, JoyCrossfadeDial.X);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.CROSSFADERLEFT, JoyDialCrossfade.Y < 0f ? -JoyDialCrossfade.Y : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.CROSSFADERRIGHT, JoyDialCrossfade.Y > 0f ? JoyDialCrossfade.Y : 0.0f);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.CROSSFADER, JoyDialCrossfade.Y);
+            yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.CROSSFADERT, Crossfader.value);
 
             yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.EUPHORIA, Euphoria ? 1.0f : 0.0f);
-
             yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.START, Start ? 1.0f : 0.0f);
             yield return new KeyValuePair<string, float>(INPUT_NAMES.WII_TURNTABLE.SELECT, Select ? 1.0f : 0.0f);
         }

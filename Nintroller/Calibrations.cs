@@ -627,38 +627,71 @@
                     centerX = 31,
                     minX = 0,
                     maxX = 63,
-                    deadX = 8,
+                    deadX = 4,
 
                     centerY = 31,
                     minY = 0,
                     maxY = 63,
-                    deadY = 8
+                    deadY = 4
                 },
-
-                JoyTableRL = new Joystick()
+                JoyTableLR = new Joystick()
                 {
-                    centerX = 32,
+                    // Wii default turntable range
+                    //centerX = 32,
+                    //minX = 0,
+                    //maxX = 63,
+                    //deadX = 0,
+
+                    //centerY = 32,
+                    //minY = 0,
+                    //maxY = 63,
+                    //deadY = 0
+
+                    // 360 LS is 0-65535, 360 turntable range is 0-255
+                    // Wii turntable range is 0-63 so max Wii "LS" range should be 16383
+                    centerX = 8192,
                     minX = 0,
-                    maxX = 63,
+                    maxX = 16383,
                     deadX = 0,
 
-                    centerY = 32,
+                    centerY = 8192,
                     minY = 0,
-                    maxY = 63,
+                    maxY = 16383,
                     deadY = 0
                 },
-
-                JoyCrossfadeDial = new Joystick()
+                JoyDialCrossfade = new Joystick()
                 {
-                    centerX = 7,
+                    centerX = 15,
                     minX = 0,
-                    maxX = 15,
+                    maxX = 31,
                     deadX = 0,
 
-                    centerY = 15,
+                    centerY = 7,
                     minY = 0,
-                    maxY = 31,
-                    deadY = 0
+                    maxY = 15,
+                    deadY = 1
+                },
+                LButtons = new Trigger()
+                {
+                    // 360 trigger max range
+                    min = 0,
+                    max = 255
+                },
+                RButtons = new Trigger()
+                {
+                    // 360 trigger max range
+                    min = 0,
+                    max = 255
+                },
+                Dial = new Trigger()
+                {
+                    min = 0,
+                    max = 31
+                },
+                Crossfader = new Trigger()
+                {
+                    min = 0,
+                    max = 15
                 }
             };
         }
@@ -1122,6 +1155,7 @@
         /// <param name="preset"></param>
         public void SetCalibrations(Calibrations.CalibrationPreset preset)
         {
+            // for turntables, only Default calibration is implemented
             switch (preset)
             {
                 case Calibrations.CalibrationPreset.Default:
