@@ -2,7 +2,8 @@
 WiitarThing lets you use Wii Guitar Hero guitars (a.k.a. "Wiitars") and Wii Guitar Hero drums (a.k.a. "Wiidrums") **wirelessly** on Windows PCs with high performance (built with Clone Hero in mind). 
 To use Wiitars or Wiidrums with a wired connection on your PC without a Wiimote or bluetooth, simply order the [Raphnet adapter](https://www.raphnet-tech.com/products/wusbmote_1player_adapter_v3/index.php) and plug it in to your PC. This software is not needed in that case.
 
-Built upon [WiinUSoft and WiinUPro's codebase](https://github.com/keypuncher/wiinupro), but not forked because the changes are too significant and messy. 
+WiitarThing Built upon [WiinUSoft and WiinUPro's codebase](https://github.com/keypuncher/wiinupro), but not forked because the changes are too significant and messy.
+My fork is based on [the original WiitarThing fork](https://github.com/Meowmaritus/WiitarThing), with the ViGEm conversion code done by [MWisBest in their fork/issue](https://github.com/Meowmaritus/WiitarThing/issues/9). I've simply merged the code and built releases.
 All credit for connecting Wiimotes in general and most of the UI goes to Justin Keys.
 
 http://www.wiinupro.com/
@@ -36,15 +37,10 @@ http://www.wiinupro.com/
      * **1.3.5.** **UNCHECK** the `Generic Gamepad Configuration Support` checkbox.
      
 * **2.** Setup the required virtual Xbox gamepad driver.
-  * **2.1.** Download the [SCP Driver](https://github.com/Meowmaritus/WiitarThing/releases/download/v2.7/WiitarThing_SCP_Driver.zip).
-  * **2.2.** Extract it.
-  * **2.3.** Run the ScpDriver.exe program **as an administrator**.
-  * **2.4.** **CHECK** the `Configure Service` checkbox at the bottom.
-  * **2.5.** **UNCHECK** the `Bluetooth Driver` checkbox at the bottom.
-  * **2.6.** **CHECK** the `Force Install` checkbox at the bottom.
-  * **2.7.** Click the "Install" button and wait for installation to finish.
+  * **2.1.** Download the [ViGEm Driver](https://github.com/ViGEm/ViGEmBus/releases) setup - You're looking for something named **ViGEmBus_Setup_1.16.116.exe**. The numbers may be different, that's OK!.
+  * **2.2.** Run it as admin and install the driver.
 * **3.** Get WiitarThing
-  * **3.1.** Visit [the "Releases" tab](https://github.com/Meowmaritus/WiitarThing/releases). 
+  * **3.1.** Visit [the "Releases" tab](https://github.com/Aida-Enna/WiitarThing/releases). 
   * **3.2.** Download the `WiitarThing.<version>.zip` file for the latest version released.
   * **3.3.** Extract the ZIP anywhere.
 
