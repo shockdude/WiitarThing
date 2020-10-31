@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Nefarius.ViGEm.Client;
+using Nefarius.ViGEm.Client.Targets;
+using Nefarius.ViGEm.Client.Targets.Xbox360;
 using NintrollerLib;
-using ScpControl;
 
 namespace WiinUSoft.Holders
 {
@@ -28,79 +29,79 @@ namespace WiinUSoft.Holders
             switch (type)
             {
                 case ControllerType.ProController:
-                    result.Add(Inputs.ProController.A,      Inputs.Xbox360.A);
-                    result.Add(Inputs.ProController.B,      Inputs.Xbox360.B);
-                    result.Add(Inputs.ProController.X,      Inputs.Xbox360.X);
-                    result.Add(Inputs.ProController.Y,      Inputs.Xbox360.Y);
+                    result.Add(Inputs.ProController.A, Inputs.Xbox360.A);
+                    result.Add(Inputs.ProController.B, Inputs.Xbox360.B);
+                    result.Add(Inputs.ProController.X, Inputs.Xbox360.X);
+                    result.Add(Inputs.ProController.Y, Inputs.Xbox360.Y);
 
-                    result.Add(Inputs.ProController.UP,     Inputs.Xbox360.UP);
-                    result.Add(Inputs.ProController.DOWN,   Inputs.Xbox360.DOWN);
-                    result.Add(Inputs.ProController.LEFT,   Inputs.Xbox360.LEFT);
-                    result.Add(Inputs.ProController.RIGHT,  Inputs.Xbox360.RIGHT);
+                    result.Add(Inputs.ProController.UP, Inputs.Xbox360.UP);
+                    result.Add(Inputs.ProController.DOWN, Inputs.Xbox360.DOWN);
+                    result.Add(Inputs.ProController.LEFT, Inputs.Xbox360.LEFT);
+                    result.Add(Inputs.ProController.RIGHT, Inputs.Xbox360.RIGHT);
 
-                    result.Add(Inputs.ProController.L,      Inputs.Xbox360.LB);
-                    result.Add(Inputs.ProController.R,      Inputs.Xbox360.RB);
-                    result.Add(Inputs.ProController.ZL,     Inputs.Xbox360.LT);
-                    result.Add(Inputs.ProController.ZR,     Inputs.Xbox360.RT);
+                    result.Add(Inputs.ProController.L, Inputs.Xbox360.LB);
+                    result.Add(Inputs.ProController.R, Inputs.Xbox360.RB);
+                    result.Add(Inputs.ProController.ZL, Inputs.Xbox360.LT);
+                    result.Add(Inputs.ProController.ZR, Inputs.Xbox360.RT);
 
-                    result.Add(Inputs.ProController.LUP,    Inputs.Xbox360.LUP);
-                    result.Add(Inputs.ProController.LDOWN,  Inputs.Xbox360.LDOWN);
-                    result.Add(Inputs.ProController.LLEFT,  Inputs.Xbox360.LLEFT);
+                    result.Add(Inputs.ProController.LUP, Inputs.Xbox360.LUP);
+                    result.Add(Inputs.ProController.LDOWN, Inputs.Xbox360.LDOWN);
+                    result.Add(Inputs.ProController.LLEFT, Inputs.Xbox360.LLEFT);
                     result.Add(Inputs.ProController.LRIGHT, Inputs.Xbox360.LRIGHT);
 
-                    result.Add(Inputs.ProController.RUP,    Inputs.Xbox360.RUP);
-                    result.Add(Inputs.ProController.RDOWN,  Inputs.Xbox360.RDOWN);
-                    result.Add(Inputs.ProController.RLEFT,  Inputs.Xbox360.RLEFT);
+                    result.Add(Inputs.ProController.RUP, Inputs.Xbox360.RUP);
+                    result.Add(Inputs.ProController.RDOWN, Inputs.Xbox360.RDOWN);
+                    result.Add(Inputs.ProController.RLEFT, Inputs.Xbox360.RLEFT);
                     result.Add(Inputs.ProController.RRIGHT, Inputs.Xbox360.RRIGHT);
 
-                    result.Add(Inputs.ProController.LS,     Inputs.Xbox360.LS);
-                    result.Add(Inputs.ProController.RS,     Inputs.Xbox360.RS);
+                    result.Add(Inputs.ProController.LS, Inputs.Xbox360.LS);
+                    result.Add(Inputs.ProController.RS, Inputs.Xbox360.RS);
                     result.Add(Inputs.ProController.SELECT, Inputs.Xbox360.BACK);
-                    result.Add(Inputs.ProController.START,  Inputs.Xbox360.START);
-                    result.Add(Inputs.ProController.HOME,   Inputs.Xbox360.GUIDE);
+                    result.Add(Inputs.ProController.START, Inputs.Xbox360.START);
+                    result.Add(Inputs.ProController.HOME, Inputs.Xbox360.GUIDE);
                     break;
 
                 case ControllerType.ClassicControllerPro:
-                    result.Add(Inputs.ClassicControllerPro.A,      Inputs.Xbox360.A);
-                    result.Add(Inputs.ClassicControllerPro.B,      Inputs.Xbox360.B);
-                    result.Add(Inputs.ClassicControllerPro.X,      Inputs.Xbox360.X);
-                    result.Add(Inputs.ClassicControllerPro.Y,      Inputs.Xbox360.Y);
+                    result.Add(Inputs.ClassicControllerPro.A, Inputs.Xbox360.A);
+                    result.Add(Inputs.ClassicControllerPro.B, Inputs.Xbox360.B);
+                    result.Add(Inputs.ClassicControllerPro.X, Inputs.Xbox360.X);
+                    result.Add(Inputs.ClassicControllerPro.Y, Inputs.Xbox360.Y);
 
-                    result.Add(Inputs.ClassicControllerPro.UP,     Inputs.Xbox360.UP);
-                    result.Add(Inputs.ClassicControllerPro.DOWN,   Inputs.Xbox360.DOWN);
-                    result.Add(Inputs.ClassicControllerPro.LEFT,   Inputs.Xbox360.LEFT);
-                    result.Add(Inputs.ClassicControllerPro.RIGHT,  Inputs.Xbox360.RIGHT);
-                                      
-                    result.Add(Inputs.ClassicControllerPro.L,      Inputs.Xbox360.LB);
-                    result.Add(Inputs.ClassicControllerPro.R,      Inputs.Xbox360.RB);
-                    result.Add(Inputs.ClassicControllerPro.ZL,     Inputs.Xbox360.LT);
-                    result.Add(Inputs.ClassicControllerPro.ZR,     Inputs.Xbox360.RT);
-                                      
-                    result.Add(Inputs.ClassicControllerPro.LUP,    Inputs.Xbox360.LUP);
-                    result.Add(Inputs.ClassicControllerPro.LDOWN,  Inputs.Xbox360.LDOWN);
-                    result.Add(Inputs.ClassicControllerPro.LLEFT,  Inputs.Xbox360.LLEFT);
+                    result.Add(Inputs.ClassicControllerPro.UP, Inputs.Xbox360.UP);
+                    result.Add(Inputs.ClassicControllerPro.DOWN, Inputs.Xbox360.DOWN);
+                    result.Add(Inputs.ClassicControllerPro.LEFT, Inputs.Xbox360.LEFT);
+                    result.Add(Inputs.ClassicControllerPro.RIGHT, Inputs.Xbox360.RIGHT);
+
+                    result.Add(Inputs.ClassicControllerPro.L, Inputs.Xbox360.LB);
+                    result.Add(Inputs.ClassicControllerPro.R, Inputs.Xbox360.RB);
+                    result.Add(Inputs.ClassicControllerPro.ZL, Inputs.Xbox360.LT);
+                    result.Add(Inputs.ClassicControllerPro.ZR, Inputs.Xbox360.RT);
+
+                    result.Add(Inputs.ClassicControllerPro.LUP, Inputs.Xbox360.LUP);
+                    result.Add(Inputs.ClassicControllerPro.LDOWN, Inputs.Xbox360.LDOWN);
+                    result.Add(Inputs.ClassicControllerPro.LLEFT, Inputs.Xbox360.LLEFT);
                     result.Add(Inputs.ClassicControllerPro.LRIGHT, Inputs.Xbox360.LRIGHT);
-                                      
-                    result.Add(Inputs.ClassicControllerPro.RUP,    Inputs.Xbox360.RUP);
-                    result.Add(Inputs.ClassicControllerPro.RDOWN,  Inputs.Xbox360.RDOWN);
-                    result.Add(Inputs.ClassicControllerPro.RLEFT,  Inputs.Xbox360.RLEFT);
-                    result.Add(Inputs.ClassicControllerPro.RRIGHT, Inputs.Xbox360.RRIGHT);
-                                      
-                    result.Add(Inputs.ClassicControllerPro.SELECT, Inputs.Xbox360.BACK);
-                    result.Add(Inputs.ClassicControllerPro.START,  Inputs.Xbox360.START);
-                    result.Add(Inputs.ClassicControllerPro.HOME,   Inputs.Xbox360.GUIDE);
 
-                    result.Add(Inputs.Wiimote.UP,    Inputs.Xbox360.UP);
-                    result.Add(Inputs.Wiimote.DOWN,  Inputs.Xbox360.DOWN);
-                    result.Add(Inputs.Wiimote.LEFT,  Inputs.Xbox360.LEFT);
+                    result.Add(Inputs.ClassicControllerPro.RUP, Inputs.Xbox360.RUP);
+                    result.Add(Inputs.ClassicControllerPro.RDOWN, Inputs.Xbox360.RDOWN);
+                    result.Add(Inputs.ClassicControllerPro.RLEFT, Inputs.Xbox360.RLEFT);
+                    result.Add(Inputs.ClassicControllerPro.RRIGHT, Inputs.Xbox360.RRIGHT);
+
+                    result.Add(Inputs.ClassicControllerPro.SELECT, Inputs.Xbox360.BACK);
+                    result.Add(Inputs.ClassicControllerPro.START, Inputs.Xbox360.START);
+                    result.Add(Inputs.ClassicControllerPro.HOME, Inputs.Xbox360.GUIDE);
+
+                    result.Add(Inputs.Wiimote.UP, Inputs.Xbox360.UP);
+                    result.Add(Inputs.Wiimote.DOWN, Inputs.Xbox360.DOWN);
+                    result.Add(Inputs.Wiimote.LEFT, Inputs.Xbox360.LEFT);
                     result.Add(Inputs.Wiimote.RIGHT, Inputs.Xbox360.RIGHT);
-                    result.Add(Inputs.Wiimote.A,     Inputs.Xbox360.A);
-                    result.Add(Inputs.Wiimote.B,     Inputs.Xbox360.B);
-                    result.Add(Inputs.Wiimote.ONE,   Inputs.Xbox360.LS);
-                    result.Add(Inputs.Wiimote.TWO,   Inputs.Xbox360.RS);
-                    result.Add(Inputs.Wiimote.PLUS,  Inputs.Xbox360.BACK);
+                    result.Add(Inputs.Wiimote.A, Inputs.Xbox360.A);
+                    result.Add(Inputs.Wiimote.B, Inputs.Xbox360.B);
+                    result.Add(Inputs.Wiimote.ONE, Inputs.Xbox360.LS);
+                    result.Add(Inputs.Wiimote.TWO, Inputs.Xbox360.RS);
+                    result.Add(Inputs.Wiimote.PLUS, Inputs.Xbox360.BACK);
                     result.Add(Inputs.Wiimote.MINUS, Inputs.Xbox360.START);
-                    result.Add(Inputs.Wiimote.HOME,  Inputs.Xbox360.GUIDE);
+                    result.Add(Inputs.Wiimote.HOME, Inputs.Xbox360.GUIDE);
                     result.Add(Inputs.Wiimote.ACC_SHAKE_X, "");
                     result.Add(Inputs.Wiimote.ACC_SHAKE_Y, "");
                     result.Add(Inputs.Wiimote.ACC_SHAKE_Z, "");
@@ -111,46 +112,46 @@ namespace WiinUSoft.Holders
                     break;
 
                 case ControllerType.ClassicController:
-                    result.Add(Inputs.ClassicController.B,      Inputs.Xbox360.B);
-                    result.Add(Inputs.ClassicController.A,      Inputs.Xbox360.A);
-                    result.Add(Inputs.ClassicController.Y,      Inputs.Xbox360.X);
-                    result.Add(Inputs.ClassicController.X,      Inputs.Xbox360.Y);
+                    result.Add(Inputs.ClassicController.B, Inputs.Xbox360.B);
+                    result.Add(Inputs.ClassicController.A, Inputs.Xbox360.A);
+                    result.Add(Inputs.ClassicController.Y, Inputs.Xbox360.X);
+                    result.Add(Inputs.ClassicController.X, Inputs.Xbox360.Y);
 
-                    result.Add(Inputs.ClassicController.UP,     Inputs.Xbox360.UP);
-                    result.Add(Inputs.ClassicController.DOWN,   Inputs.Xbox360.DOWN);
-                    result.Add(Inputs.ClassicController.LEFT,   Inputs.Xbox360.LEFT);
-                    result.Add(Inputs.ClassicController.RIGHT,  Inputs.Xbox360.RIGHT);
+                    result.Add(Inputs.ClassicController.UP, Inputs.Xbox360.UP);
+                    result.Add(Inputs.ClassicController.DOWN, Inputs.Xbox360.DOWN);
+                    result.Add(Inputs.ClassicController.LEFT, Inputs.Xbox360.LEFT);
+                    result.Add(Inputs.ClassicController.RIGHT, Inputs.Xbox360.RIGHT);
 
-                    result.Add(Inputs.ClassicController.ZL,     Inputs.Xbox360.LB);
-                    result.Add(Inputs.ClassicController.ZR,     Inputs.Xbox360.RB);
-                    result.Add(Inputs.ClassicController.LT,     Inputs.Xbox360.LT);
-                    result.Add(Inputs.ClassicController.RT,     Inputs.Xbox360.RT);
+                    result.Add(Inputs.ClassicController.ZL, Inputs.Xbox360.LB);
+                    result.Add(Inputs.ClassicController.ZR, Inputs.Xbox360.RB);
+                    result.Add(Inputs.ClassicController.LT, Inputs.Xbox360.LT);
+                    result.Add(Inputs.ClassicController.RT, Inputs.Xbox360.RT);
 
-                    result.Add(Inputs.ClassicController.LUP,    Inputs.Xbox360.LUP);
-                    result.Add(Inputs.ClassicController.LDOWN,  Inputs.Xbox360.LDOWN);
-                    result.Add(Inputs.ClassicController.LLEFT,  Inputs.Xbox360.LLEFT);
+                    result.Add(Inputs.ClassicController.LUP, Inputs.Xbox360.LUP);
+                    result.Add(Inputs.ClassicController.LDOWN, Inputs.Xbox360.LDOWN);
+                    result.Add(Inputs.ClassicController.LLEFT, Inputs.Xbox360.LLEFT);
                     result.Add(Inputs.ClassicController.LRIGHT, Inputs.Xbox360.LRIGHT);
 
-                    result.Add(Inputs.ClassicController.RUP,    Inputs.Xbox360.RUP);
-                    result.Add(Inputs.ClassicController.RDOWN,  Inputs.Xbox360.RDOWN);
-                    result.Add(Inputs.ClassicController.RLEFT,  Inputs.Xbox360.RLEFT);
+                    result.Add(Inputs.ClassicController.RUP, Inputs.Xbox360.RUP);
+                    result.Add(Inputs.ClassicController.RDOWN, Inputs.Xbox360.RDOWN);
+                    result.Add(Inputs.ClassicController.RLEFT, Inputs.Xbox360.RLEFT);
                     result.Add(Inputs.ClassicController.RRIGHT, Inputs.Xbox360.RRIGHT);
 
                     result.Add(Inputs.ClassicController.SELECT, Inputs.Xbox360.BACK);
-                    result.Add(Inputs.ClassicController.START,  Inputs.Xbox360.START);
-                    result.Add(Inputs.ClassicController.HOME,   Inputs.Xbox360.GUIDE);
+                    result.Add(Inputs.ClassicController.START, Inputs.Xbox360.START);
+                    result.Add(Inputs.ClassicController.HOME, Inputs.Xbox360.GUIDE);
 
-                    result.Add(Inputs.Wiimote.UP,    Inputs.Xbox360.UP);
-                    result.Add(Inputs.Wiimote.DOWN,  Inputs.Xbox360.DOWN);
-                    result.Add(Inputs.Wiimote.LEFT,  Inputs.Xbox360.LEFT);
+                    result.Add(Inputs.Wiimote.UP, Inputs.Xbox360.UP);
+                    result.Add(Inputs.Wiimote.DOWN, Inputs.Xbox360.DOWN);
+                    result.Add(Inputs.Wiimote.LEFT, Inputs.Xbox360.LEFT);
                     result.Add(Inputs.Wiimote.RIGHT, Inputs.Xbox360.RIGHT);
-                    result.Add(Inputs.Wiimote.A,     Inputs.Xbox360.A);
-                    result.Add(Inputs.Wiimote.B,     Inputs.Xbox360.B);
-                    result.Add(Inputs.Wiimote.ONE,   Inputs.Xbox360.LS);
-                    result.Add(Inputs.Wiimote.TWO,   Inputs.Xbox360.RS);
-                    result.Add(Inputs.Wiimote.PLUS,  Inputs.Xbox360.BACK);
+                    result.Add(Inputs.Wiimote.A, Inputs.Xbox360.A);
+                    result.Add(Inputs.Wiimote.B, Inputs.Xbox360.B);
+                    result.Add(Inputs.Wiimote.ONE, Inputs.Xbox360.LS);
+                    result.Add(Inputs.Wiimote.TWO, Inputs.Xbox360.RS);
+                    result.Add(Inputs.Wiimote.PLUS, Inputs.Xbox360.BACK);
                     result.Add(Inputs.Wiimote.MINUS, Inputs.Xbox360.START);
-                    result.Add(Inputs.Wiimote.HOME,  Inputs.Xbox360.GUIDE);
+                    result.Add(Inputs.Wiimote.HOME, Inputs.Xbox360.GUIDE);
                     result.Add(Inputs.Wiimote.ACC_SHAKE_X, "");
                     result.Add(Inputs.Wiimote.ACC_SHAKE_Y, "");
                     result.Add(Inputs.Wiimote.ACC_SHAKE_Z, "");
@@ -199,8 +200,8 @@ namespace WiinUSoft.Holders
                 case ControllerType.Nunchuk:
                 case ControllerType.NunchukB:
                 case ControllerType.Wiimote:
-                    result.Add(Inputs.Wiimote.RIGHT,    Inputs.Xbox360.UP);
-                    result.Add(Inputs.Wiimote.LEFT,  Inputs.Xbox360.DOWN);
+                    result.Add(Inputs.Wiimote.RIGHT, Inputs.Xbox360.UP);
+                    result.Add(Inputs.Wiimote.LEFT, Inputs.Xbox360.DOWN);
 
                     result.Add(Inputs.Wiimote.B, Inputs.Xbox360.A); //Green
                     result.Add(Inputs.Wiimote.DOWN, Inputs.Xbox360.B); //Red
@@ -408,22 +409,22 @@ namespace WiinUSoft.Holders
                     {
                         writeReport[map.Value] += Values[map.Key];
                     }
-                    catch(KeyNotFoundException) { }
+                    catch (KeyNotFoundException) { }
                 }
                 else if (Values.ContainsKey(map.Key))
                 {
                     switch (map.Value)
                     {
-                        case Inputs.Xbox360.LLEFT : try { LX -= Values[map.Key]; } catch { } break;
+                        case Inputs.Xbox360.LLEFT: try { LX -= Values[map.Key]; } catch { } break;
                         case Inputs.Xbox360.LRIGHT: try { LX += Values[map.Key]; } catch { } break;
-                        case Inputs.Xbox360.LUP   : try { LY += Values[map.Key]; } catch { } break;
-                        case Inputs.Xbox360.LDOWN : try { LY -= Values[map.Key]; } catch { } break;
-                        case Inputs.Xbox360.RLEFT : try { RX -= Values[map.Key]; } catch { } break;
+                        case Inputs.Xbox360.LUP: try { LY += Values[map.Key]; } catch { } break;
+                        case Inputs.Xbox360.LDOWN: try { LY -= Values[map.Key]; } catch { } break;
+                        case Inputs.Xbox360.RLEFT: try { RX -= Values[map.Key]; } catch { } break;
                         case Inputs.Xbox360.RRIGHT: try { RX += Values[map.Key]; } catch { } break;
-                        case Inputs.Xbox360.RUP   : try { RY += Values[map.Key]; } catch { } break;
-                        case Inputs.Xbox360.RDOWN : try { RY -= Values[map.Key]; } catch { } break;
-                        case Inputs.Xbox360.LT    : try { LT += Values[map.Key]; } catch { } break;
-                        case Inputs.Xbox360.RT    : try { RT += Values[map.Key]; } catch { } break;
+                        case Inputs.Xbox360.RUP: try { RY += Values[map.Key]; } catch { } break;
+                        case Inputs.Xbox360.RDOWN: try { RY -= Values[map.Key]; } catch { } break;
+                        case Inputs.Xbox360.LT: try { LT += Values[map.Key]; } catch { } break;
+                        case Inputs.Xbox360.RT: try { RT += Values[map.Key]; } catch { } break;
 
 #if MouseMode
                         case "MouseMode": 
@@ -438,21 +439,21 @@ namespace WiinUSoft.Holders
                 }
             }
 
-            report[10] |= (byte)(writeReport[Inputs.Xbox360.BACK]  > 0f ? 1 << 0 : 0);
-            report[10] |= (byte)(writeReport[Inputs.Xbox360.LS]    > 0f ? 1 << 1 : 0);
-            report[10] |= (byte)(writeReport[Inputs.Xbox360.RS]    > 0f ? 1 << 2 : 0);
+            report[10] |= (byte)(writeReport[Inputs.Xbox360.BACK] > 0f ? 1 << 0 : 0);
+            report[10] |= (byte)(writeReport[Inputs.Xbox360.LS] > 0f ? 1 << 1 : 0);
+            report[10] |= (byte)(writeReport[Inputs.Xbox360.RS] > 0f ? 1 << 2 : 0);
             report[10] |= (byte)(writeReport[Inputs.Xbox360.START] > 0f ? 1 << 3 : 0);
-            report[10] |= (byte)(writeReport[Inputs.Xbox360.UP]    > 0f ? 1 << 4 : 0);
-            report[10] |= (byte)(writeReport[Inputs.Xbox360.DOWN]  > 0f ? 1 << 5 : 0);
+            report[10] |= (byte)(writeReport[Inputs.Xbox360.UP] > 0f ? 1 << 4 : 0);
+            report[10] |= (byte)(writeReport[Inputs.Xbox360.DOWN] > 0f ? 1 << 5 : 0);
             report[10] |= (byte)(writeReport[Inputs.Xbox360.RIGHT] > 0f ? 1 << 6 : 0);
-            report[10] |= (byte)(writeReport[Inputs.Xbox360.LEFT]  > 0f ? 1 << 7 : 0);
+            report[10] |= (byte)(writeReport[Inputs.Xbox360.LEFT] > 0f ? 1 << 7 : 0);
 
             report[11] |= (byte)(writeReport[Inputs.Xbox360.LB] > 0f ? 1 << 2 : 0);
             report[11] |= (byte)(writeReport[Inputs.Xbox360.RB] > 0f ? 1 << 3 : 0);
-            report[11] |= (byte)(writeReport[Inputs.Xbox360.Y]  > 0f ? 1 << 4 : 0);
-            report[11] |= (byte)(writeReport[Inputs.Xbox360.B]  > 0f ? 1 << 5 : 0);
-            report[11] |= (byte)(writeReport[Inputs.Xbox360.A]  > 0f ? 1 << 6 : 0);
-            report[11] |= (byte)(writeReport[Inputs.Xbox360.X]  > 0f ? 1 << 7 : 0);
+            report[11] |= (byte)(writeReport[Inputs.Xbox360.Y] > 0f ? 1 << 4 : 0);
+            report[11] |= (byte)(writeReport[Inputs.Xbox360.B] > 0f ? 1 << 5 : 0);
+            report[11] |= (byte)(writeReport[Inputs.Xbox360.A] > 0f ? 1 << 6 : 0);
+            report[11] |= (byte)(writeReport[Inputs.Xbox360.X] > 0f ? 1 << 7 : 0);
 
             report[12] |= (byte)(writeReport[Inputs.Xbox360.GUIDE] > 0f ? 1 << 0 : 0);
 
@@ -490,7 +491,7 @@ namespace WiinUSoft.Holders
         {
             Flags[Inputs.Flags.RUMBLE] = false;
             bus.Unplug(ID);
-            
+
             if (ID > 0 && ID < 5)
             {
                 availabe[ID - 1] = true;
@@ -580,9 +581,12 @@ namespace WiinUSoft.Holders
         }
     }
 
-    public class XBus : BusDevice
+    public class XBus
     {
         private static XBus defaultInstance;
+        private ViGEmClient viGEmClient;
+        private Dictionary<int, IXbox360Controller> targets;
+        private List<IXbox360Controller> connected;
 
         // Default Bus
         public static XBus Default
@@ -593,16 +597,29 @@ namespace WiinUSoft.Holders
                 if (defaultInstance == null)
                 {
                     defaultInstance = new XBus();
-                    defaultInstance.Open();
-                    defaultInstance.Start();
                 }
 
                 return defaultInstance;
             }
         }
 
-        public XBus() 
+        public ViGEmClient Client
         {
+            get
+            {
+                return viGEmClient;
+            }
+            private set
+            {
+                viGEmClient = value;
+            }
+        }
+
+        public XBus()
+        {
+            Client = new ViGEmClient();
+            targets = new Dictionary<int, IXbox360Controller>();
+            connected = new List<IXbox360Controller>();
             App.Current.Exit += StopDevice;
         }
 
@@ -610,12 +627,53 @@ namespace WiinUSoft.Holders
         {
             if (defaultInstance != null)
             {
-                defaultInstance.Stop();
-                defaultInstance.Close();
+                foreach (IXbox360Controller controller in targets.Values)
+                {
+                    if (connected.Contains(controller))
+                    {
+                        controller.Disconnect();
+                        connected.Remove(controller);
+                    }
+                }
+                Client.Dispose();
             }
         }
 
-        public override int Parse(byte[] Input, byte[] Output, DsModel Type = DsModel.DS3)
+        public void Plugin(int id, ushort vid = 0, ushort pid = 0)
+        {
+            id -= 1;
+            if (vid != 0 && pid != 0)
+            {
+                targets.Add(id, Client.CreateXbox360Controller(vid, pid));
+            }
+            else
+            {
+                targets.Add(id, Client.CreateXbox360Controller());
+            }
+            targets[id].AutoSubmitReport = false;
+            targets[id].Connect();
+            connected.Add(targets[id]);
+        }
+
+        public bool Unplug(int id)
+        {
+            id -= 1;
+            if (targets.Count > id && targets[id] != null)
+            {
+                if (connected.Contains(targets[id]))
+                {
+                    targets[id].Disconnect();
+                    connected.Remove(targets[id]);
+                    targets.Remove(id);
+                    return true;
+                }
+                return false;
+            }
+
+            return false;
+        }
+
+        public int Parse(byte[] Input, byte[] Output)
         {
             for (int index = 0; index < 28; index++)
             {
@@ -667,6 +725,59 @@ namespace WiinUSoft.Holders
             }
 
             return Input[0];
+        }
+
+        public virtual bool Report(byte[] input, byte[] output)
+        {
+            byte id = (byte)(input[4] - 1);
+            if (targets.Count <= id || targets[id] == null)
+            {
+                return false;
+            }
+            IXbox360Controller controller = targets[id];
+            controller.ResetReport();
+            if ((input[10] & 32) != 0)
+                controller.SetButtonState(Xbox360Button.Back, true);
+            if ((input[10] & 64) != 0)
+                controller.SetButtonState(Xbox360Button.LeftThumb, true);
+            if ((input[10] & 128) != 0)
+                controller.SetButtonState(Xbox360Button.RightThumb, true);
+            if ((input[10] & 16) != 0)
+                controller.SetButtonState(Xbox360Button.Start, true);
+            if ((input[10] & 1) != 0)
+                controller.SetButtonState(Xbox360Button.Up, true);
+            if ((input[10] & 2) != 0)
+                controller.SetButtonState(Xbox360Button.Down, true);
+            if ((input[10] & 4) != 0)
+                controller.SetButtonState(Xbox360Button.Left, true);
+            if ((input[10] & 8) != 0)
+                controller.SetButtonState(Xbox360Button.Right, true);
+
+            if ((input[11] & 1) != 0)
+                controller.SetButtonState(Xbox360Button.LeftShoulder, true);
+            if ((input[11] & 2) != 0)
+                controller.SetButtonState(Xbox360Button.RightShoulder, true);
+            if ((input[11] & 128) != 0)
+                controller.SetButtonState(Xbox360Button.Y, true);
+            if ((input[11] & 32) != 0)
+                controller.SetButtonState(Xbox360Button.B, true);
+            if ((input[11] & 16) != 0)
+                controller.SetButtonState(Xbox360Button.A, true);
+            if ((input[11] & 64) != 0)
+                controller.SetButtonState(Xbox360Button.X, true);
+            if ((input[11] & 4) != 0)
+                controller.SetButtonState(Xbox360Button.Guide, true);
+
+            controller.SetSliderValue(Xbox360Slider.LeftTrigger, input[12]);
+            controller.SetSliderValue(Xbox360Slider.RightTrigger, input[13]);
+
+            controller.SetAxisValue(Xbox360Axis.LeftThumbX, BitConverter.ToInt16(input, 14));
+            controller.SetAxisValue(Xbox360Axis.LeftThumbY, BitConverter.ToInt16(input, 16));
+            controller.SetAxisValue(Xbox360Axis.RightThumbX, BitConverter.ToInt16(input, 18));
+            controller.SetAxisValue(Xbox360Axis.RightThumbY, BitConverter.ToInt16(input, 20));
+
+            controller.SubmitReport();
+            return true;
         }
     }
 }

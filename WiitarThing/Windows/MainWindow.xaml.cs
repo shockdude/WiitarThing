@@ -532,6 +532,11 @@ namespace WiinUSoft
             UserPrefs.SavePrefs();
         }
 
+        private void menu_Github_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://github.com/Aida-Enna/WiitarThing");
+        }
+
         #region Shortcut Creation
         public void CreateShortcut(string path)
         {
