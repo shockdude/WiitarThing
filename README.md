@@ -29,7 +29,8 @@ http://www.wiinupro.com/
 * **1.** Remove conflicting software.
   * **1.1.** Make sure you do NOT have HIDWiimote installed as it completely overrides the Wiimote's drivers and makes WiitarThing unable to communicate with them. [HIDWiimote Uninstallation Instructions](https://www.julianloehr.de/educational-work/hid-wiimote/)  (scroll down to "Uninstall Instructions")
   * **1.2.** Make sure you do NOT have vJoy installed as it may interfere with the virtual gamepads WiitarThing creates to send inputs to Clone Hero. [vJoy Uninstallation Instructions](http://vjoystick.sourceforge.net/site/index.php/77-vjoy/102-removing-vjoy)
-  * **1.3.** Ok so you don't need to *remove* Steam, but make sure that Xbox controller configuration is DISABLED:
+  * **1.3.** Make sure you remove the SCPDriver if it's installed (and any other SCP stuff)
+  * **1.4.** Make sure that Xbox controller configuration is DISABLED in Steam:
      * **1.3.1.** Go to the main `Settings` screen on Steam.
      * **1.3.2.** Go to the `Controller` tab.
      * **1.3.3.** Click the `GENERAL CONTROLLER SETTINGS` button.
