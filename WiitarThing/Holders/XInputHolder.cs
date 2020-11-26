@@ -284,12 +284,11 @@ namespace WiinUSoft.Holders
                     break;
 
                 case ControllerType.Drums:
-                    //TODO: When Clone Hero adds pro drums support, separate Green and Orange pads.
                     result.Add(Inputs.WiiDrums.G, Inputs.Xbox360.A);
                     result.Add(Inputs.WiiDrums.R, Inputs.Xbox360.B);
                     result.Add(Inputs.WiiDrums.Y, Inputs.Xbox360.Y);
                     result.Add(Inputs.WiiDrums.B, Inputs.Xbox360.X);
-                    result.Add(Inputs.WiiDrums.O, Inputs.Xbox360.A);
+                    result.Add(Inputs.WiiDrums.O, Inputs.Xbox360.RB);
                     result.Add(Inputs.WiiDrums.BASS, Inputs.Xbox360.LB);
 
                     result.Add(Inputs.WiiDrums.UP, Inputs.Xbox360.UP);
