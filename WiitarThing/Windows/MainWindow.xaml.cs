@@ -65,7 +65,7 @@ namespace WiinUSoft
 
 
             Version version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
-            Title = "WiitarThing " + string.Format("V{0}.{1}.{2}", version.Major, version.Minor, version.Revision);
+            Title = "WiitarThing v" + version.ToString();
 
 #if DEBUG
             Title += " Debug Build";
@@ -286,7 +286,7 @@ namespace WiinUSoft
             try
             {
                 Version version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
-                menu_version.Header = string.Format("Version {0}.{1}.{2}", version.Major, version.Minor, version.Revision);
+                menu_version.Header = "Version " + version.ToString(); 
             }
             catch { }
 
