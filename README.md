@@ -111,7 +111,6 @@ http://www.wiinupro.com/
 * This application supports the Classic Controller and Classic Controller Pro extensions as well. When using these, the buttons are mapped to the corresponding Xbox 360 gamepad buttons.
 * **The touch bar is not supported in this application because the Wii touch bars use even worse technology than the Xbox 360 touch bars and nobody likes them and Clone Hero doesn't support them.**
 * The tilt functionality actually comes **from the Wiimote** on Wiitars so changing Wiimotes will actually change your tilt sensitivity and responsiveness as Wiimote accelerometers are very inconsistently produced.
-* This application maps Wiidrums orange and green pads to a same Xbox 360 gamepad button, since Clone Hero currently only supports 4-lane drums. If Clone Hero adds Rock Band Pro Drums support, or Guitar Hero 5-lane drums support, this application will we updated to accommodate to those changes.
 
 ### Getting More Help If Needed
 Consult the `#help-line` channel in the [official Clone Hero server on Discord](https://discordapp.com/invite/Hsn4Cgu) if you need help following the instructions, advice on what to buy, or any other questions.
