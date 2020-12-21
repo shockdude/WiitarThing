@@ -81,7 +81,7 @@ All credit for connecting Wiimotes in general and most of the UI goes to Justin 
 ### Connecting Wiitars (WITH A STANDARD BLUETOOTH ADAPTER USING THE TOSHIBA BLUETOOTH STACK)
 * **Not reccommended except as a last resort as it does not work on Windows 10 and often doesn't work on Windows 7 for no reason. This method was not tested for Wiidrums.**
 * **1.** If your Bluetooth receiver is an official Toshiba branded one, then skip to step 3.
-* **2.** For non-Toshiba Bluetooth receivers, you must follow [**this long list of instructions**](http://www.wiinupro.com/tutorials/toshiba-stack) (driver test mode required etc) to install the Toshiba bluetooth drivers and software on non-Toshiba adapters.
+* **2.** For non-Toshiba Bluetooth receivers, you must follow [**this long list of instructions**](https://github.com/Aida-Enna/WiitarThing/wiki/Toshiba-Stack-Installation) (driver test mode required etc) to install the Toshiba bluetooth drivers and software on non-Toshiba adapters.
 * **3.** Connect the Wiimote via Toshiba bluetooth (no specific methods required, it just works like any other bluetooth device)
 * **4.** Close WiitarThing if it was already running.
 * **5.** Run WiitarThing AS AN ADMINISTRATOR.
