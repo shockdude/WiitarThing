@@ -15,6 +15,7 @@ using System.Windows.Input;
 using Shared;
 using Shared.Windows;
 using System.Diagnostics;
+using Nefarius.ViGEm.Client;
 
 namespace WiinUSoft
 {
@@ -39,6 +40,20 @@ namespace WiinUSoft
             return activeProcId == procId;
         }
 
+        /// <summary>Returns true if ViGEmBus is installed, false otherwise</summary>
+        public static bool ViGEmBusIsInstalled()
+        {
+            try
+            {
+                var client = new ViGEmClient();
+                client.Dispose();
+                return true;
+            }
+            catch (Nefarius.ViGEm.Client.Exceptions.VigemBusNotFoundException)
+            {
+                return false;
+            }
+        }
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         private static extern IntPtr GetForegroundWindow();
@@ -309,6 +324,12 @@ namespace WiinUSoft
 
             Refresh();
             AutoRefresh(menu_AutoRefresh.IsChecked && ApplicationIsActivated());
+            if (!ViGEmBusIsInstalled())
+            {
+                MessageBox.Show("This program requires the ViGEmBus driver to function.",
+                "ViGEmBus Not Found", MessageBoxButton.OK, MessageBoxImage.Error);
+                Application.Current.Shutdown();
+            }
         }
 
         private void DeviceControl_OnConnectStateChange(DeviceControl sender, DeviceState oldState, DeviceState newState)
